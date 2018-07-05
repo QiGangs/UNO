@@ -40,7 +40,7 @@ public class InitUtil {
         //初始化 2*4 = 8张高级功能牌
         for(int i = 0;i<=3;i++){
             for(String s : highFunc){
-                allCard.add(new Card(CardStatus.CARD_TYPE_WILD,CardStatus.CRAD_NOT_NUM,CardStatus.CRAD_NOT_COLOR,s));
+                allCard.add(new Card(CardStatus.CARD_TYPE_WILD,CardStatus.CRAD_NOT_NUM,s,CardStatus.CRAD_NOT_COLOR));
             }
         }
         return allCard;
