@@ -1,0 +1,54 @@
+<<<<<<< HEAD
+.project
+/.settings/
+
+# OS X FS metadata
+.DS_Store
+# vim backups of files that are open at time of commit
+*.swp
+.tmp
+.settings/*
+/bin
+target
+test-output
+.classpath
+.idea
+.settings
+*.iml
+*/tmp
+tmp/
+*.git.properties
+*.espressostorage
+*.ipr
+*.iws
+.springBeans
+.iml
+
+# maven-release-plugin artifacts
+/release.properties
+pom.xml.releaseBackup
+.pydevproject
+=======
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+>>>>>>> refs/remotes/origin/master
