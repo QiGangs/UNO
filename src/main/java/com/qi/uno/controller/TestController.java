@@ -3,6 +3,7 @@ package com.qi.uno.controller;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.gson.Gson;
 import com.qi.uno.common.CardHeapStatus;
+import com.qi.uno.model.entiy.GameInfo;
 import com.qi.uno.model.entiy.Player;
 import com.qi.uno.model.entiy.Room;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,9 @@ public class TestController {
     @GetMapping("/test")
     public String getSuffleCard() {
         Gson gson = new Gson();
-        return gson.toJson(new Room(new Long(123),123,new Player(new Long(123))).getCardPile());
+        Room room = new Room(new Long(123),123,new Player(new Long(123)));
+        room.startGame();
+        return gson.toJson(room.getGameInfo().getCardPile());
     }
 
 

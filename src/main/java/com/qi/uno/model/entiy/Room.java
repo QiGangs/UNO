@@ -17,26 +17,19 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @create: 2018-07-05 12:05
  **/
 public class Room {
-    private PileService pileService;   //牌堆服务
     private Long roomId;     //房间ID
     private int playerNum;    //玩家个数
     private ArrayList<Player> players;  //玩家列表
-    private int direction;      //出牌方向
-    private LinkedBlockingQueue<Card> cardPile;   //牌堆
-    private ArrayList<Card> discardPile; //弃牌堆
     private Long mainPlayerId;   //房主ID
+    private GameInfo gameInfo;
 
-    //当前玩家是谁，当前出的牌，当前牌是否要执行什么操作，下一个要出牌的玩家，下一张可以出什么牌，是否uno，
+
 
 
     public Room(Long roomId, int playerNum,Player mainPlayer) {
-        pileService = new PileServiceImpl();
         this.roomId = roomId;
         this.playerNum = playerNum;
         this.players = Lists.newArrayListWithCapacity(playerNum);
-        this.direction = RoomStatus.DISCARD_DIRECTION_NEXT;
-        this.cardPile = pileService.getRuffleCard();
-        this.discardPile = Lists.newArrayListWithCapacity(CardStatus.CARD_ALL_NUM);
         this.mainPlayerId = mainPlayer.getPlayerId();
         addPlayer(mainPlayer);
     }
@@ -51,6 +44,7 @@ public class Room {
     }
 
     public void startGame(){
+        gameInfo = new GameInfo();
 
     }
 
@@ -85,28 +79,12 @@ public class Room {
         this.players = players;
     }
 
-    public int getDirection() {
-        return direction;
+    public GameInfo getGameInfo() {
+        return gameInfo;
     }
 
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
-    public LinkedBlockingQueue<Card> getCardPile() {
-        return cardPile;
-    }
-
-    public void setCardPile(LinkedBlockingQueue<Card> cardPile) {
-        this.cardPile = cardPile;
-    }
-
-    public ArrayList<Card> getDiscardPile() {
-        return discardPile;
-    }
-
-    public void setDiscardPile(ArrayList<Card> discardPile) {
-        this.discardPile = discardPile;
+    public void setGameInfo(GameInfo gameInfo) {
+        this.gameInfo = gameInfo;
     }
 
     public Long getMainPlayerId() {
@@ -123,9 +101,6 @@ public class Room {
                 "roomId=" + roomId +
                 ", playerNum=" + playerNum +
                 ", players=" + players +
-                ", direction=" + direction +
-                ", cardPile=" + cardPile +
-                ", discardPile=" + discardPile +
                 ", mainPlayerId=" + mainPlayerId +
                 '}';
     }
