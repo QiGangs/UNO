@@ -3,6 +3,9 @@ package com.qi.uno.model.entiy;
 import com.google.common.collect.Lists;
 import com.qi.uno.common.CardStatus;
 import com.qi.uno.common.RoomStatus;
+import com.qi.uno.service.PileService;
+import com.qi.uno.service.impl.PileServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -14,6 +17,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @create: 2018-07-05 12:05
  **/
 public class Room {
+    private PileService pileService;
     private Long roomId;
     private int playerNum;
     private ArrayList<Player> players;
@@ -22,12 +26,14 @@ public class Room {
     private ArrayList<Card> discardPile;
     private Long mainPlayerId;
 
+
     public Room(Long roomId, int playerNum,Player mainPlayer) {
+        pileService = new PileServiceImpl();
         this.roomId = roomId;
         this.playerNum = playerNum;
         this.players = Lists.newArrayListWithCapacity(playerNum);
         this.direction = RoomStatus.DISCARD_DIRECTION_NEXT;
-        this.cardPile = new LinkedBlockingQueue<>(CardStatus.CARD_ALL_NUM);
+        this.cardPile = pileService.getRuffleCard();
         this.discardPile = Lists.newArrayListWithCapacity(CardStatus.CARD_ALL_NUM);
         this.mainPlayerId = mainPlayer.getPlayerId();
         addPlayer(mainPlayer);
