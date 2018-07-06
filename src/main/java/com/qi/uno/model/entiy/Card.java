@@ -6,16 +6,27 @@ package com.qi.uno.model.entiy;
  * @create: 2018-07-05 11:00
  **/
 public class Card {
+    private int id;
     private String type;
     private int num;
     private String func;
     private String color;
 
-    public Card(String type, int num, String func, String color) {
+
+    public Card(int id, String type, int num, String func, String color) {
+        this.id = id;
         this.type = type;
         this.num = num;
         this.func = func;
         this.color = color;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getType() {
@@ -53,7 +64,8 @@ public class Card {
     @Override
     public String toString() {
         return "Card{" +
-                "type='" + type + '\'' +
+                "id=" + id +
+                ", type='" + type + '\'' +
                 ", num=" + num +
                 ", func='" + func + '\'' +
                 ", color='" + color + '\'' +
