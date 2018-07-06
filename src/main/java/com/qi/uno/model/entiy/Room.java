@@ -26,6 +26,8 @@ public class Room {
     private ArrayList<Card> discardPile; //弃牌堆
     private Long mainPlayerId;   //房主ID
 
+    //当前玩家是谁，当前出的牌，当前牌是否要执行什么操作，下一个要出牌的玩家，下一张可以出什么牌，是否uno，
+
 
     public Room(Long roomId, int playerNum,Player mainPlayer) {
         pileService = new PileServiceImpl();

@@ -25,41 +25,41 @@ public class Card {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+//    public void setId(int id) {
+//        this.id = id;
+//    }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+//    public void setType(String type) {
+//        this.type = type;
+//    }
 
     public int getNum() {
         return num;
     }
 
-    public void setNum(int num) {
-        this.num = num;
-    }
+//    public void setNum(int num) {
+//        this.num = num;
+//    }
 
     public String getFunc() {
         return func;
     }
 
-    public void setFunc(String func) {
-        this.func = func;
-    }
+//    public void setFunc(String func) {
+//        this.func = func;
+//    }
 
     public String getColor() {
         return color;
     }
 
-    public void setColor(String color) {
-        this.color = color;
-    }
+//    public void setColor(String color) {
+//        this.color = color;
+//    }
 
     @Override
     public String toString() {

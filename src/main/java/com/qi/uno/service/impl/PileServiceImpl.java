@@ -23,6 +23,7 @@ public class PileServiceImpl implements PileService {
     public LinkedBlockingQueue<Card> getRuffleCard() {
         List<Card> newCardPile = Lists.newArrayList(CardHeapStatus.allCard);
         Collections.shuffle(newCardPile);
+        newCardPile.get(0);
         return new LinkedBlockingQueue<>(newCardPile);
     }
 }
