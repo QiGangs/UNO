@@ -1,5 +1,6 @@
 package com.qi.uno.utils;
 
+import com.google.common.collect.Lists;
 import com.qi.uno.common.CardStatus;
 import com.qi.uno.model.entiy.Card;
 
@@ -14,7 +15,7 @@ import java.util.LinkedList;
 public class InitUtil {
     private int h = 1;
     public ArrayList<Card> getInitCardHeap() {
-        ArrayList<Card> allCard = new ArrayList<>(CardStatus.CARD_ALL_NUM);
+        ArrayList<Card> allCard = Lists.newArrayListWithCapacity(CardStatus.CARD_ALL_NUM);
         LinkedList<String> color = CardStatus.getAllColor();
         LinkedList<Integer> num = CardStatus.getAllNum();
         LinkedList<String> func = CardStatus.getFunc();
