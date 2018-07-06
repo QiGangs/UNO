@@ -17,14 +17,14 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @create: 2018-07-05 12:05
  **/
 public class Room {
-    private PileService pileService;
-    private Long roomId;
-    private int playerNum;
-    private ArrayList<Player> players;
-    private int direction;
-    private LinkedBlockingQueue<Card> cardPile;
-    private ArrayList<Card> discardPile;
-    private Long mainPlayerId;
+    private PileService pileService;   //牌堆服务
+    private Long roomId;     //房间ID
+    private int playerNum;    //玩家个数
+    private ArrayList<Player> players;  //玩家列表
+    private int direction;      //出牌方向
+    private LinkedBlockingQueue<Card> cardPile;   //牌堆
+    private ArrayList<Card> discardPile; //弃牌堆
+    private Long mainPlayerId;   //房主ID
 
 
     public Room(Long roomId, int playerNum,Player mainPlayer) {
