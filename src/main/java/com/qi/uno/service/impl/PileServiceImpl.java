@@ -26,4 +26,13 @@ public class PileServiceImpl implements PileService {
         newCardPile.get(0);
         return new LinkedBlockingQueue<>(newCardPile);
     }
+
+    @Override
+    public ArrayList<Card> getFirstSevenCard(LinkedBlockingQueue<Card> cardPile) {
+        ArrayList<Card> rudge = Lists.newArrayList(CardHeapStatus.allCard);
+        for(int i = 0;i<7;i++) {
+            rudge.add(cardPile.poll());
+        }
+        return rudge;
+    }
 }

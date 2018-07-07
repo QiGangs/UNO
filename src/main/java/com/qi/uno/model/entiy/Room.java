@@ -36,20 +36,24 @@ public class Room {
 
     //房间行为逻辑
     public void addPlayer(Player player){
-
+        players.add(player);
     }
 
     public void playerExit(Player player){
-
+        players.remove(player);
     }
 
-    public void startGame(){
-        gameInfo = new GameInfo();
-
+    public boolean startGame(){
+        if(playerNum != players.size()){
+            return false;
+        }
+        gameInfo = new GameInfo(players);
+        gameInfo.startGame(players.get(0));
+        return true;
     }
 
     public void gameOver(){
-
+        gameInfo = null;
     }
 
 

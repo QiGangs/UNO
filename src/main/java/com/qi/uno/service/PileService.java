@@ -12,4 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  **/
 public interface PileService {
     LinkedBlockingQueue<Card> getRuffleCard();
+
+
+    ArrayList<Card> getFirstSevenCard(LinkedBlockingQueue<Card> cardPile);
 }
