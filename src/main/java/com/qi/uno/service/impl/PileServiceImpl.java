@@ -35,4 +35,21 @@ public class PileServiceImpl implements PileService {
         }
         return rudge;
     }
+
+    @Override
+    public ArrayList<Card> getCanUsedCards(Card prevCard, ArrayList<Card> rudge) {
+        ArrayList<Card> arrayList = Lists.newArrayList();
+        for(Card card : rudge){
+            if(prevCard.getFunc().equals(CardStatus.CARD_TYPE_NUM)){
+                if(card.getColor().equals(prevCard.getColor()) || card.getNum() == prevCard.getNum() || !card.getFunc().equals(CardStatus.CARD_TYPE_NUM)){
+                    arrayList.add(card);
+                }
+            }else if(prevCard.getFunc().equals(CardStatus.CARD_TYPE_FUNC)){
+//                if(){
+//
+//                }
+            }
+        }
+        return null;
+    }
 }

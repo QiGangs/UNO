@@ -56,6 +56,10 @@ public class Room {
         gameInfo = null;
     }
 
+    public String getRoomGameEvent(){
+
+        return null;
+    }
 
 
     //get set

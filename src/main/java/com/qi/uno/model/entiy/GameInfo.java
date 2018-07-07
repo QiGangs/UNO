@@ -27,7 +27,7 @@ public class GameInfo {
     private Card currentPlayerUsedCard;    //当前玩家最后出的牌
 
     private boolean isCurrentUNO;    //当前玩家是否UNO
-    private boolean isCurrentGetCard;    //当前玩家是否要摸牌
+    private boolean isCurrentGetCard;    //当前玩家是否选择摸牌
     private boolean isNextGetCard;    //下一个玩家是否要摸牌
 
     //当前玩家是谁，当前出的牌，当前牌是否要执行什么操作，下一个要出牌的玩家，下一张可以出什么牌，是否uno，
@@ -46,8 +46,7 @@ public class GameInfo {
             playerx.setRudge(pileService.getFirstSevenCard(cardPile));
         }
         prevCard = cardPile.poll();   //引导牌
-
-        //描述可以的行为
+        canUseCard = getCanUsedCards(); //当前玩家可以出的牌
     }
     
     /** 
@@ -57,7 +56,7 @@ public class GameInfo {
     * @Author: qigang 
     * @Date: 2018/7/7 
     */
-    public void action(){
+    public void action(Card card,Boolean isGetCard){
         
     }
 
@@ -70,6 +69,10 @@ public class GameInfo {
     */
     public void balance(){
         
+    }
+
+    public ArrayList<Card> getCanUsedCards(){
+        return pileService.getCanUsedCards(prevCard,currentPlayer.getRudge());
     }
     
     
