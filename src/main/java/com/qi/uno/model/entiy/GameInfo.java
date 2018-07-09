@@ -95,15 +95,19 @@ public class GameInfo {
     public void balance(){
         if(!prevCard.getFunc().equals(CardStatus.CARD_TYPE_NUM)){
             if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_STOP)){
-                //currentPlayer =
+                currentPlayer = players.get(getNextPlayer(players,direction,2));
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_REVERSE)){
                 direction = (direction == RoomStatus.DISCARD_DIRECTION_NEXT ? RoomStatus.DISCARD_DIRECTION_PREV:RoomStatus.DISCARD_DIRECTION_NEXT);
+                currentPlayer = players.get(getNextPlayer(players,direction,1));
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_ADD2)){
-
+                currentPlayer = players.get(getNextPlayer(players,direction,1));
+                getCard(currentPlayer,2);
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_CHANGE)){
+                //变色好烦啊
 
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_TRUMP)){
-
+                currentPlayer = players.get(getNextPlayer(players,direction,1));
+                getCard(currentPlayer,4);
             }
         }
         return;
@@ -123,6 +127,15 @@ public class GameInfo {
             prevCard = card1;
             balance();
         }
+        if(currentPlayer.getRudge().size() == 0){
+            //游戏结束
+        }
+    }
+
+
+    public int getNextPlayer(ArrayList<Player> players,int direction,int num){
+
+        return 0;
     }
 
 //    public ArrayList<Card> getCanUsedCards(){
