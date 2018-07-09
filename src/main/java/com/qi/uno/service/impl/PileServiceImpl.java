@@ -29,7 +29,7 @@ public class PileServiceImpl implements PileService {
 
     @Override
     public ArrayList<Card> getFirstSevenCard(LinkedBlockingQueue<Card> cardPile) {
-        ArrayList<Card> rudge = Lists.newArrayList(CardHeapStatus.allCard);
+        ArrayList<Card> rudge = Lists.newArrayListWithCapacity(CardStatus.CARD_ALL_NUM);
         for(int i = 0;i<7;i++) {
             rudge.add(cardPile.poll());
         }

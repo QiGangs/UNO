@@ -57,7 +57,7 @@ public class GameInfo {
     * @Date: 2018/7/7 
     */
     public boolean action(Player player,Card card,Boolean isGetCard){
-        if(player.getPlayerId() == currentPlayer.getPlayerId()){
+        if(player.getPlayerId().equals(currentPlayer.getPlayerId())){
             return false;
         }
         if(card == null && isGetCard == true){
@@ -103,13 +103,14 @@ public class GameInfo {
                 currentPlayer = players.get(getNextPlayer(players,direction,1));
                 getCard(currentPlayer,2);
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_CHANGE)){
-                //变色好烦啊
-
+                    //变色好烦啊
+                currentPlayer = players.get(getNextPlayer(players,direction,1));
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_TRUMP)){
                 currentPlayer = players.get(getNextPlayer(players,direction,1));
                 getCard(currentPlayer,4);
             }
         }
+        currentPlayer = players.get(getNextPlayer(players,direction,1));
         return;
     }
 
@@ -134,8 +135,30 @@ public class GameInfo {
 
 
     public int getNextPlayer(ArrayList<Player> players,int direction,int num){
+        int i;
+        for(i = 0;i< players.size();i++){
+            if(players.get(i).getPlayerId().equals(currentPlayer.getPlayerId())) {
+                break;
+            }
+        }
+        if(direction == RoomStatus.DISCARD_DIRECTION_NEXT){
+            i += num;
+            i = i%players.size();
+        }else {
+            i -= num;
+            i = (i+num)%players.size();
+        }
+        return i;
+    }
 
-        return 0;
+
+    public ArrayList<Card> getPlayerRudge(Long playerId){
+        for(int i = 0; i< players.size();i++){
+            if(players.get(i).getPlayerId().equals(playerId)){
+                return players.get(i).getRudge();
+            }
+        }
+        return null;
     }
 
 //    public ArrayList<Card> getCanUsedCards(){
