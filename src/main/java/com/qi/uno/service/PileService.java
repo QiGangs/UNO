@@ -16,7 +16,9 @@ public interface PileService {
 
     ArrayList<Card> getFirstSevenCard(LinkedBlockingQueue<Card> cardPile);
 
+    ArrayList<Card> getSomeCard(LinkedBlockingQueue<Card> cardPile,int sum);
 
+    int findCardById(ArrayList<Card> rudge,int id);
 
-    ArrayList<Card> getCanUsedCards(Card prevCard,ArrayList<Card> rudge);
+//    ArrayList<Card> getCanUsedCards(Card prevCard,ArrayList<Card> rudge);
 }

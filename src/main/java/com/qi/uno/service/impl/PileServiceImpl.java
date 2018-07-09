@@ -37,19 +37,39 @@ public class PileServiceImpl implements PileService {
     }
 
     @Override
-    public ArrayList<Card> getCanUsedCards(Card prevCard, ArrayList<Card> rudge) {
-        ArrayList<Card> arrayList = Lists.newArrayList();
-        for(Card card : rudge){
-            if(prevCard.getFunc().equals(CardStatus.CARD_TYPE_NUM)){
-                if(card.getColor().equals(prevCard.getColor()) || card.getNum() == prevCard.getNum() || !card.getFunc().equals(CardStatus.CARD_TYPE_NUM)){
-                    arrayList.add(card);
-                }
-            }else if(prevCard.getFunc().equals(CardStatus.CARD_TYPE_FUNC)){
-//                if(){
-//
-//                }
+    public ArrayList<Card> getSomeCard(LinkedBlockingQueue<Card> cardPile, int sum) {
+        ArrayList<Card> rudge = Lists.newArrayListWithCapacity(sum);
+        for(int i = 0;i<sum;i++) {
+            rudge.add(cardPile.poll());
+        }
+        return rudge;
+    }
+
+    @Override
+    public int findCardById(ArrayList<Card> rudge, int id) {
+        for(int i = 0;i<rudge.size();i++){
+            if(rudge.get(i).getId() == id){
+                return i;
             }
         }
-        return null;
+        return -1;
     }
+
+
+//    @Override
+//    public ArrayList<Card> getCanUsedCards(Card prevCard, ArrayList<Card> rudge) {
+//        ArrayList<Card> arrayList = Lists.newArrayList();
+//        for(Card card : rudge){
+//            if(prevCard.getFunc().equals(CardStatus.CARD_TYPE_NUM)){
+//                if(card.getColor().equals(prevCard.getColor()) || card.getNum() == prevCard.getNum() || !card.getFunc().equals(CardStatus.CARD_TYPE_NUM)){
+//                    arrayList.add(card);
+//                }
+//            }else if(prevCard.getFunc().equals(CardStatus.CARD_TYPE_FUNC)){
+////                if(){
+////
+////                }
+//            }
+//        }
+//        return null;
+//    }
 }

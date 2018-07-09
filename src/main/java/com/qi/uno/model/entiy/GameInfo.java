@@ -41,12 +41,12 @@ public class GameInfo {
     * @Date: 2018/7/7 
     */
     public void startGame(Player player){
-        currentPlayer = player;
         for(Player playerx : players){   //发牌
             playerx.setRudge(pileService.getFirstSevenCard(cardPile));
         }
+        currentPlayer = player;
         prevCard = cardPile.poll();   //引导牌
-        canUseCard = getCanUsedCards(); //当前玩家可以出的牌
+//        canUseCard = getCanUsedCards(); //当前玩家可以出的牌
     }
     
     /** 
@@ -56,8 +56,33 @@ public class GameInfo {
     * @Author: qigang 
     * @Date: 2018/7/7 
     */
-    public void action(Card card,Boolean isGetCard){
-        
+    public boolean action(Player player,Card card,Boolean isGetCard){
+        if(player.getPlayerId() == currentPlayer.getPlayerId()){
+            return false;
+        }
+        if(card == null && isGetCard == true){
+            getCard(player,1);
+            return false;
+        }
+        if(card.getColor() == CardStatus.CRAD_NOT_COLOR){
+            putCard(player,card); //出牌
+            return true;
+        }else {
+            if(prevCard.getFunc().equals(CardStatus.CARD_TYPE_FUNC)){
+                if(card.getColor().equals(prevCard.getColor())){
+                    putCard(player,card);//出牌
+                    return true;
+                }
+            }else {
+                if(card.getColor().equals(prevCard.getColor()) || card.getNum() == prevCard.getNum()){
+                    putCard(player,card);//出牌
+                    return true;
+                }
+            }
+        }
+
+        return false;
+
     }
 
     /** 
@@ -68,14 +93,64 @@ public class GameInfo {
     * @Date: 2018/7/7 
     */
     public void balance(){
-        
+        if(!prevCard.getFunc().equals(CardStatus.CARD_TYPE_NUM)){
+            if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_STOP)){
+                //currentPlayer =
+            }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_REVERSE)){
+                direction = (direction == RoomStatus.DISCARD_DIRECTION_NEXT ? RoomStatus.DISCARD_DIRECTION_PREV:RoomStatus.DISCARD_DIRECTION_NEXT);
+            }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_ADD2)){
+
+            }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_CHANGE)){
+
+            }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_TRUMP)){
+
+            }
+        }
+        return;
     }
 
-    public ArrayList<Card> getCanUsedCards(){
-        return pileService.getCanUsedCards(prevCard,currentPlayer.getRudge());
+
+    public void getCard(Player player,int num){
+        player.getRudge().addAll(pileService.getSomeCard(cardPile,num));
     }
+
+
+    public void putCard(Player player,Card card){
+        int i = pileService.findCardById(player.getRudge(),card.getId());
+        if(i != -1){
+            Card card1 = player.getRudge().remove(i);
+            discardPile.add(card1);
+            prevCard = card1;
+            balance();
+        }
+    }
+
+//    public ArrayList<Card> getCanUsedCards(){
+//        return pileService.getCanUsedCards(prevCard,currentPlayer.getRudge());
+//    }
     
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public GameInfo(ArrayList<Player> players){
         this.players = players;
