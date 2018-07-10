@@ -42,7 +42,7 @@ public class TestThisGame {
                     default:card = null;
                 }
 
-                if(card.getFunc().equals(CardStatus.CRAD_FUNC_CHANGE)){
+                if(card.getType().equals(CardStatus.CARD_TYPE_WILD)){
                     String m = scanner.next();
                     card.setChangeColoer(m);
                 }
@@ -69,12 +69,12 @@ public class TestThisGame {
 
 
     public static void show(Room room){
-        System.out.println(room.getGameInfo().getPlayerRudge(new Long(111)).size()+""+room.getGameInfo().getPlayerRudge(new Long(111)));
-        System.out.println(room.getGameInfo().getPlayerRudge(new Long(222)).size()+""+room.getGameInfo().getPlayerRudge(new Long(222)));
+        System.out.println("111："+room.getGameInfo().getPlayerRudge(new Long(111)).size()+""+room.getGameInfo().getPlayerRudge(new Long(111)));
+        System.out.println("222: "+room.getGameInfo().getPlayerRudge(new Long(222)).size()+""+room.getGameInfo().getPlayerRudge(new Long(222)));
 
-        System.out.println(room.getGameInfo().getCurrentPlayer().getPlayerId());
-        System.out.println(room.getGameInfo().getPrevCard());
-        System.out.println(room.getGameInfo().getCardPile().size());
-        System.out.println(room.getGameInfo().getDiscardPile().size());
+        System.out.println("当前出牌玩家："+room.getGameInfo().getCurrentPlayer().getPlayerId());
+        System.out.println("上一张牌："+room.getGameInfo().getPrevCard());
+        System.out.println("摸牌堆："+room.getGameInfo().getCardPile().size());
+        System.out.println("弃牌堆："+room.getGameInfo().getDiscardPile().size());
     }
 }

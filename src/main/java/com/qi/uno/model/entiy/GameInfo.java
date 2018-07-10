@@ -46,6 +46,7 @@ public class GameInfo {
         }
         currentPlayer = player;
         prevCard = cardPile.poll();   //引导牌
+        discardPile.add(prevCard);   //引导牌计入弃牌堆
 //        canUseCard = getCanUsedCards(); //当前玩家可以出的牌
         balance();
     }
@@ -59,24 +60,19 @@ public class GameInfo {
     */
     public boolean action(Player player,Card card,Boolean isGetCard){
         if(!player.getPlayerId().equals(currentPlayer.getPlayerId())){
-            //System.out.println("qqq"+player.getPlayerId()+""+currentPlayer.getPlayerId());
             return false;
         }
         if(card == null && isGetCard == true){
             getCard(player,1);
-            System.out.println("www");
+            currentPlayer = players.get(getNextPlayer(players,direction,1));
             return false;
         }
-
         if(card.getColor() == CardStatus.CRAD_NOT_COLOR){    //草鸡功能牌则直接出
             putCard(player,card); //出牌
-            //currentPlayer = players.get(getNextPlayer(players,direction,1));
-            System.out.println("eee");
             return true;
-        }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_CHANGE)){  //上一张为变色牌得分别判断
+        }else if(prevCard.getType().equals(CardStatus.CARD_TYPE_WILD)){  //上一张为万能牌得分别判断
             if(card.getColor().equals(prevCard.getChangeColoer())){
                 putCard(player,card);//出牌
-                System.out.println("rrr");
                 return true;
             }else {
                 return false;
@@ -85,13 +81,11 @@ public class GameInfo {
             if(prevCard.getType().equals(CardStatus.CARD_TYPE_FUNC)){    //上一张为其他功能牌则颜色要一致
                 if(card.getColor().equals(prevCard.getColor())){
                     putCard(player,card);//出牌
-                    System.out.println("rrr");
                     return true;
                 }
             }else {                                         //普通牌则判断颜色与大小
                 if(card.getColor().equals(prevCard.getColor()) || card.getNum() == prevCard.getNum()){
                     putCard(player,card);//出牌
-                    System.out.println("ttt");
                     return true;
                 }
             }
@@ -111,21 +105,15 @@ public class GameInfo {
     public void balance(){
         if(!prevCard.getFunc().equals(CardStatus.CARD_TYPE_NUM)){
             if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_STOP)){
-                System.out.println(currentPlayer);
                 currentPlayer = players.get(getNextPlayer(players,direction,2));
-                System.out.println(currentPlayer);
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_REVERSE)){
-                System.out.println(direction);
                 direction = (direction == RoomStatus.DISCARD_DIRECTION_NEXT ? RoomStatus.DISCARD_DIRECTION_PREV:RoomStatus.DISCARD_DIRECTION_NEXT);
-                System.out.println(direction);
-                System.out.println(currentPlayer);
                 currentPlayer = players.get(getNextPlayer(players,direction,1));
-                System.out.println(currentPlayer);
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_ADD2)){
                 currentPlayer = players.get(getNextPlayer(players,direction,1));
                 getCard(currentPlayer,2);
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_CHANGE)){
-                    //变色好烦啊
+                //变色好烦啊  其实这里好像不需要什么操作.....
                 currentPlayer = players.get(getNextPlayer(players,direction,1));
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_TRUMP)){
                 currentPlayer = players.get(getNextPlayer(players,direction,1)); //切换到下一用户
