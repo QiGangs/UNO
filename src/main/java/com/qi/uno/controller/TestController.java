@@ -35,7 +35,7 @@ public class TestController {
         Gson gson = new Gson();
         Room room = new Room(new Long(123),123,new Player(new Long(123)));
         room.startGame();
-        return gson.toJson(room.getGameInfo().getCardPile());
+        return gson.toJson(room.getCardPile());
     }
 
 

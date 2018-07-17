@@ -23,15 +23,49 @@ public class Room {
     private Long mainPlayerId;   //房主ID
     private GameInfo gameInfo;
 
-
-
-
     public Room(Long roomId, int playerNum,Player mainPlayer) {
         this.roomId = roomId;
         this.playerNum = playerNum;
         this.players = Lists.newArrayListWithCapacity(playerNum);
         this.mainPlayerId = mainPlayer.getPlayerId();
         addPlayer(mainPlayer);
+    }
+    /** 
+    * @Description: 房间的出牌方法是对游戏局的出牌方法的封装  ,以下几个都是
+    * @Param: [player, card] 
+    * @return: void 
+    * @Author: qigang 
+    * @Date: 2018/7/17 
+    */
+    public void putCard(Player player,Card card){
+        int flag = gameInfo.putCard(player,card);
+        if(flag == -1){
+            gameOver();
+        }
+    }
+
+    public Player getCurrentPlayer() {
+        return gameInfo.getCurrentPlayer();
+    }
+
+    public boolean action(Player player,Card card,Boolean isGetCard){
+        return gameInfo.action(player,card,isGetCard);
+    }
+
+    public ArrayList<Card> getPlayerRudge(Long playerId){
+        return gameInfo.getPlayerRudge(playerId);
+    }
+
+    public Card getPrevCard() {
+        return gameInfo.getPrevCard();
+    }
+
+    public LinkedBlockingQueue<Card> getCardPile() {
+        return gameInfo.getCardPile();
+    }
+
+    public ArrayList<Card> getDiscardPile() {
+        return gameInfo.getDiscardPile();
     }
 
     //房间行为逻辑
@@ -42,7 +76,6 @@ public class Room {
     public void playerExit(Player player){
         players.remove(player);
     }
-
     public boolean startGame(){
         if(playerNum != players.size()){
             return false;
@@ -51,15 +84,21 @@ public class Room {
         gameInfo.startGame(players.get(0));
         return true;
     }
-
     public void gameOver(){
         gameInfo = null;
     }
-
     public String getRoomGameEvent(){
-
         return null;
     }
+
+
+
+
+
+
+
+
+
 
 
     //get set
@@ -87,9 +126,9 @@ public class Room {
         this.players = players;
     }
 
-    public GameInfo getGameInfo() {
-        return gameInfo;
-    }
+//    public GameInfo getGameInfo() {
+//        return gameInfo;
+//    }
 
     public void setGameInfo(GameInfo gameInfo) {
         this.gameInfo = gameInfo;

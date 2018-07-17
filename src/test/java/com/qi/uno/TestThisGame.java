@@ -24,8 +24,6 @@ public class TestThisGame {
         room.addPlayer(new Player(new Long(333)));
         room.startGame();
 
-        System.out.println(room.getGameInfo().toString());
-
         show(room);
 
         int i;
@@ -37,12 +35,12 @@ public class TestThisGame {
             int x = scanner.nextInt();
             i = scanner.nextInt();
             if(i == -1){
-                room.getGameInfo().action(room.getGameInfo().getCurrentPlayer(), null,true);
+                room.action(room.getCurrentPlayer(), null,true);
             }else {
                 switch (x){
-                    case 1:card = room.getGameInfo().getPlayerRudge(new Long(111)).get(i);break;
-                    case 2:card = room.getGameInfo().getPlayerRudge(new Long(222)).get(i);break;
-                    case 3:card = room.getGameInfo().getPlayerRudge(new Long(333)).get(i);break;
+                    case 1:card = room.getPlayerRudge(new Long(111)).get(i);break;
+                    case 2:card = room.getPlayerRudge(new Long(222)).get(i);break;
+                    case 3:card = room.getPlayerRudge(new Long(333)).get(i);break;
                     default:card = null;
                 }
 
@@ -50,7 +48,7 @@ public class TestThisGame {
                     String m = scanner.next();
                     card.setChangeColoer(m);
                 }
-                room.getGameInfo().action(room.getGameInfo().getCurrentPlayer(), card,false);
+                room.action(room.getCurrentPlayer(), card,false);
             }
 
 
@@ -73,13 +71,13 @@ public class TestThisGame {
 
 
     public static void show(Room room){
-        System.out.println("111："+room.getGameInfo().getPlayerRudge(new Long(111)).size()+""+room.getGameInfo().getPlayerRudge(new Long(111)));
-        System.out.println("222: "+room.getGameInfo().getPlayerRudge(new Long(222)).size()+""+room.getGameInfo().getPlayerRudge(new Long(222)));
-        System.out.println("333: "+room.getGameInfo().getPlayerRudge(new Long(333)).size()+""+room.getGameInfo().getPlayerRudge(new Long(333)));
+        System.out.println("111："+room.getPlayerRudge(new Long(111)).size()+""+room.getPlayerRudge(new Long(111)));
+        System.out.println("222: "+room.getPlayerRudge(new Long(222)).size()+""+room.getPlayerRudge(new Long(222)));
+        System.out.println("333: "+room.getPlayerRudge(new Long(333)).size()+""+room.getPlayerRudge(new Long(333)));
 
-        System.out.println("当前出牌玩家："+room.getGameInfo().getCurrentPlayer().getPlayerId());
-        System.out.println("上一张牌："+room.getGameInfo().getPrevCard());
-        System.out.println("摸牌堆："+room.getGameInfo().getCardPile().size());
-        System.out.println("弃牌堆："+room.getGameInfo().getDiscardPile().size());
+        System.out.println("当前出牌玩家："+room.getCurrentPlayer().getPlayerId());
+        System.out.println("上一张牌："+room.getPrevCard());
+        System.out.println("摸牌堆："+room.getCardPile().size());
+        System.out.println("弃牌堆："+room.getDiscardPile().size());
     }
 }

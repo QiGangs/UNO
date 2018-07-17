@@ -96,15 +96,15 @@ public class GameInfo {
     }
 
     /** 
-    * @Description: 每一个玩家出牌之后都要进行的结算函数 
+    * @Description: 每一个玩家出牌之后都要进行的结算函数
+     *              //因为结算函数里有切换玩家，所以翻开引导牌时，要调用结算函数，导致第一个玩家本来是1号，
+     *              而后切换到2号玩家（第一个玩家因随机开始【未写逻辑】），故无碍）
     * @Param: [] 
     * @return: void 
     * @Author: qigang 
     * @Date: 2018/7/7 
     */
     public void balance(){
-        System.out.println("test:"+"结算中"+prevCard.getType());
-
         if(!prevCard.getType().equals(CardStatus.CARD_TYPE_NUM)){
             if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_STOP)){
                 currentPlayer = players.get(getNextPlayer(players,direction,2));
@@ -124,9 +124,7 @@ public class GameInfo {
                 currentPlayer = players.get(getNextPlayer(players,direction,1));  //轮到下下一用户
             }
         }else {
-            System.out.println("test:"+currentPlayer.getPlayerId());
             currentPlayer = players.get(getNextPlayer(players,direction,1));
-            System.out.println("test:"+currentPlayer.getPlayerId());
         }
         return;
     }
@@ -137,7 +135,7 @@ public class GameInfo {
     }
 
 
-    public void putCard(Player player,Card card){
+    public int putCard(Player player,Card card){
         int i = pileService.findCardById(player.getRudge(),card.getId());
         if(i != -1){
             Card card1 = player.getRudge().remove(i);
@@ -146,8 +144,9 @@ public class GameInfo {
             balance();
         }
         if(currentPlayer.getRudge().size() == 0){
-            //游戏结束
+            return -1;
         }
+        return 1;
     }
 
 
