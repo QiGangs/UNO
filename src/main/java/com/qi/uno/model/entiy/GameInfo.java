@@ -103,7 +103,9 @@ public class GameInfo {
     * @Date: 2018/7/7 
     */
     public void balance(){
-        if(!prevCard.getFunc().equals(CardStatus.CARD_TYPE_NUM)){
+        System.out.println("test:"+"结算中"+prevCard.getType());
+
+        if(!prevCard.getType().equals(CardStatus.CARD_TYPE_NUM)){
             if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_STOP)){
                 currentPlayer = players.get(getNextPlayer(players,direction,2));
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_REVERSE)){
@@ -114,14 +116,18 @@ public class GameInfo {
                 getCard(currentPlayer,2);
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_CHANGE)){
                 //变色好烦啊  其实这里好像不需要什么操作.....
+                //2018.7.17  这里还是要改，牌只复制了引用，不可将草鸡牌变色记录在牌对象里，会和其他游戏房间混起来
                 currentPlayer = players.get(getNextPlayer(players,direction,1));
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_TRUMP)){
                 currentPlayer = players.get(getNextPlayer(players,direction,1)); //切换到下一用户
                 getCard(currentPlayer,4);      //摸四张
                 currentPlayer = players.get(getNextPlayer(players,direction,1));  //轮到下下一用户
             }
+        }else {
+            System.out.println("test:"+currentPlayer.getPlayerId());
+            currentPlayer = players.get(getNextPlayer(players,direction,1));
+            System.out.println("test:"+currentPlayer.getPlayerId());
         }
-        currentPlayer = players.get(getNextPlayer(players,direction,1));
         return;
     }
 

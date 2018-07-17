@@ -19,9 +19,12 @@ public class TestThisGame {
         Scanner scanner = new Scanner(System.in);
         InitUtil initUtil = new InitUtil();
         CardHeapStatus.allCard = initUtil.getInitCardHeap();
-        Room room = new Room(new Long(123),2,new Player(new Long(111)));
+        Room room = new Room(new Long(123),3,new Player(new Long(111)));
         room.addPlayer(new Player(new Long(222)));
+        room.addPlayer(new Player(new Long(333)));
         room.startGame();
+
+        System.out.println(room.getGameInfo().toString());
 
         show(room);
 
@@ -39,6 +42,7 @@ public class TestThisGame {
                 switch (x){
                     case 1:card = room.getGameInfo().getPlayerRudge(new Long(111)).get(i);break;
                     case 2:card = room.getGameInfo().getPlayerRudge(new Long(222)).get(i);break;
+                    case 3:card = room.getGameInfo().getPlayerRudge(new Long(333)).get(i);break;
                     default:card = null;
                 }
 
@@ -71,6 +75,7 @@ public class TestThisGame {
     public static void show(Room room){
         System.out.println("111："+room.getGameInfo().getPlayerRudge(new Long(111)).size()+""+room.getGameInfo().getPlayerRudge(new Long(111)));
         System.out.println("222: "+room.getGameInfo().getPlayerRudge(new Long(222)).size()+""+room.getGameInfo().getPlayerRudge(new Long(222)));
+        System.out.println("333: "+room.getGameInfo().getPlayerRudge(new Long(333)).size()+""+room.getGameInfo().getPlayerRudge(new Long(333)));
 
         System.out.println("当前出牌玩家："+room.getGameInfo().getCurrentPlayer().getPlayerId());
         System.out.println("上一张牌："+room.getGameInfo().getPrevCard());
