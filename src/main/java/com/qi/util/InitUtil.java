@@ -1,4 +1,4 @@
-package com.qi.uno.utils;
+package com.qi.util;
 
 import com.google.common.collect.Lists;
 import com.qi.uno.common.CardStatus;

@@ -1,7 +1,7 @@
-package com.qi.uno.utils.inital;
+package com.qi.util.inital;
 
 import com.qi.uno.common.CardHeapStatus;
-import com.qi.uno.utils.InitUtil;
+import com.qi.util.InitUtil;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
