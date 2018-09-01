@@ -1,6 +1,6 @@
 package com.qi;
 
-import com.qi.util.inital.ApplicationStartup;
+import com.qi.inital.ApplicationStartup;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

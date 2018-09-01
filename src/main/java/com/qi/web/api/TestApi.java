@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
  * @create: 2018-09-01 12:02
  **/
 @RestController
+@RequestMapping("/test")
 public class TestApi {
 
     @RequestMapping(value = "/person/status/get")
     public String test(){
-
         return JsonUtils.writeObjectToJson("heiehiehi");
     }
+
+
 }

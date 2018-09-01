@@ -5,7 +5,7 @@ import com.qi.uno.common.CardStatus;
 import com.qi.uno.model.entiy.Card;
 import com.qi.uno.model.entiy.Player;
 import com.qi.uno.model.entiy.Room;
-import com.qi.util.InitUtil;
+import com.qi.inital.InitUtil;
 
 import java.util.Scanner;
 

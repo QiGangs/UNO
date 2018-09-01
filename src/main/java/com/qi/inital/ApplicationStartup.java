@@ -1,7 +1,8 @@
-package com.qi.util.inital;
+package com.qi.inital;
 
+import com.google.common.collect.Maps;
 import com.qi.uno.common.CardHeapStatus;
-import com.qi.util.InitUtil;
+import com.qi.web.common.GlobalObject;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
@@ -13,7 +14,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 public class ApplicationStartup implements ApplicationListener<ContextRefreshedEvent> {
 
     /** 
-    * @Description: 初始化时，用于构建一副未进行洗牌的牌堆 
+    * @Description: 初始化时，进行初始化操作
     * @Param: [contextRefreshedEvent] 
     * @return: void 
     * @Author: qigang 
@@ -21,7 +22,10 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     */
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        //初始化牌堆
         InitUtil initUtil = new InitUtil();
         CardHeapStatus.allCard = initUtil.getInitCardHeap();
+        //初始化游戏大厅空间  即存放游戏房间的空间
+        GlobalObject.AllRoom = Maps.newConcurrentMap();
     }
 }
