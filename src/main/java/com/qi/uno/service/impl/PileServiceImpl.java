@@ -23,7 +23,7 @@ public class PileServiceImpl implements PileService {
     public LinkedBlockingQueue<Card> getRuffleCard() {
         List<Card> newCardPile = Lists.newArrayList(CardHeapStatus.allCard);
         Collections.shuffle(newCardPile);
-        newCardPile.get(0);
+        //newCardPile.get(0);
         return new LinkedBlockingQueue<>(newCardPile);
     }
 
@@ -38,6 +38,10 @@ public class PileServiceImpl implements PileService {
 
     @Override
     public ArrayList<Card> getSomeCard(LinkedBlockingQueue<Card> cardPile, int sum) {
+        //牌不够摸了得把弃牌堆洗一洗放进去
+        if(sum > cardPile.size()){
+            return null;
+        }
         ArrayList<Card> rudge = Lists.newArrayListWithCapacity(sum);
         for(int i = 0;i<sum;i++) {
             rudge.add(cardPile.poll());

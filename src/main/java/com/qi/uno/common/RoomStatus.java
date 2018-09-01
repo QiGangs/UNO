@@ -8,4 +8,7 @@ package com.qi.uno.common;
 public class RoomStatus {
     public static int DISCARD_DIRECTION_NEXT = 1;
     public static int DISCARD_DIRECTION_PREV = -1;
+
+
+    public static int DISCARD_ACTION_ERROR = 1001;
 }

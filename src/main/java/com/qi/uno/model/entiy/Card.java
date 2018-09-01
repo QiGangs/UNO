@@ -12,7 +12,7 @@ public class Card {
     private String func;
     private String color;
 
-    private String changeColoer;
+//    private String changeColoer;
 
 
     public Card(int id, String type, int num, String func, String color) {
@@ -64,13 +64,13 @@ public class Card {
 //    }
 
 
-    public String getChangeColoer() {
-        return changeColoer;
-    }
-
-    public void setChangeColoer(String changeColoer) {
-        this.changeColoer = changeColoer;
-    }
+//    public String getChangeColoer() {
+//        return changeColoer;
+//    }
+//
+//    public void setChangeColoer(String changeColoer) {
+//        this.changeColoer = changeColoer;
+//    }
 
     @Override
     public String toString() {

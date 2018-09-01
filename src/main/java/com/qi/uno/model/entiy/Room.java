@@ -31,26 +31,40 @@ public class Room {
         addPlayer(mainPlayer);
     }
     /** 
-    * @Description: 房间的出牌方法是对游戏局的出牌方法的封装  ,以下几个都是
+    * @Description: 房间的行为方法是对游戏局的出牌方法的封装  ,以下几个都是
     * @Param: [player, card] 
     * @return: void 
     * @Author: qigang 
     * @Date: 2018/7/17 
     */
-    public void putCard(Player player,Card card){
-        int flag = gameInfo.putCard(player,card);
-        if(flag == -1){
-            gameOver();
-        }
-    }
+//    public void action(Player player,Card card,boolean isGetCard){
+//        int flag = gameInfo.action(player,card,isGetCard);
+//        if(flag == -1){
+//            gameOver();
+//        }
+//    }
 
     public Player getCurrentPlayer() {
         return gameInfo.getCurrentPlayer();
     }
 
-    public boolean action(Player player,Card card,Boolean isGetCard){
-        return gameInfo.action(player,card,isGetCard);
+    public int action(Player player,Card card,Boolean isGetCard,String tempColor){
+        //超级牌要记得变得颜色是什么
+        if(card != null && (card.getFunc().equals(CardStatus.CRAD_FUNC_CHANGE) || card.getFunc().equals(CardStatus.CRAD_FUNC_TRUMP))){
+            if(tempColor == null) {
+                return RoomStatus.DISCARD_ACTION_ERROR;
+            }
+            gameInfo.setTempColor(tempColor);
+        }
+        int result =  gameInfo.action(player,card,isGetCard);
+        if(result == -1){
+            gameOver(player);
+        }
+        return result;
+
     }
+
+
 
     public ArrayList<Card> getPlayerRudge(Long playerId){
         return gameInfo.getPlayerRudge(playerId);
@@ -84,18 +98,21 @@ public class Room {
         gameInfo.startGame(players.get(0));
         return true;
     }
-    public void gameOver(){
-        gameInfo = null;
-    }
+
     public String getRoomGameEvent(){
         return null;
     }
 
 
 
+    //一局游戏结束，清理游戏信息
+    public void gameOver(Player playerWin){
 
+        //此处应该统计分数并记录到数据库中
 
+        gameInfo = null;
 
+    }
 
 
 

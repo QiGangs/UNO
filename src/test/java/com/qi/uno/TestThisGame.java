@@ -35,7 +35,7 @@ public class TestThisGame {
             int x = scanner.nextInt();
             i = scanner.nextInt();
             if(i == -1){
-                room.action(room.getCurrentPlayer(), null,true);
+                room.action(room.getCurrentPlayer(), null,true,null);
             }else {
                 switch (x){
                     case 1:card = room.getPlayerRudge(new Long(111)).get(i);break;
@@ -45,10 +45,11 @@ public class TestThisGame {
                 }
 
                 if(card.getType().equals(CardStatus.CARD_TYPE_WILD)){
+                    System.out.println("please input color");
                     String m = scanner.next();
-                    card.setChangeColoer(m);
+
                 }
-                room.action(room.getCurrentPlayer(), card,false);
+                room.action(room.getCurrentPlayer(), card,false,null);
             }
 
 

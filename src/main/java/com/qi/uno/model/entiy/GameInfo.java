@@ -7,6 +7,7 @@ import com.qi.uno.service.PileService;
 import com.qi.uno.service.impl.PileServiceImpl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -23,12 +24,18 @@ public class GameInfo {
     private int direction;      //出牌方向
     private Player currentPlayer;   //当前出牌的玩家
     private Card prevCard;        //上一个玩家出的牌
+
+    //一下两变量貌似没用过
     private ArrayList<Card> canUseCard;    //当前玩家可以使用的牌
     private Card currentPlayerUsedCard;    //当前玩家最后出的牌
 
+    //UNO暂时不考虑
     private boolean isCurrentUNO;    //当前玩家是否UNO
     private boolean isCurrentGetCard;    //当前玩家是否选择摸牌
     private boolean isNextGetCard;    //下一个玩家是否要摸牌
+
+    //超级功能牌变色后临时颜色判别
+    private String tempColor;
 
     //当前玩家是谁，当前出的牌，当前牌是否要执行什么操作，下一个要出牌的玩家，下一张可以出什么牌，是否uno，
     
@@ -58,40 +65,36 @@ public class GameInfo {
     * @Author: qigang 
     * @Date: 2018/7/7 
     */
-    public boolean action(Player player,Card card,Boolean isGetCard){
+    public int action(Player player,Card card,Boolean isGetCard){
         if(!player.getPlayerId().equals(currentPlayer.getPlayerId())){
-            return false;
+            return -2;
         }
         if(card == null && isGetCard == true){
             getCard(player,1);
             currentPlayer = players.get(getNextPlayer(players,direction,1));
-            return false;
+            return -2;
         }
         if(card.getColor() == CardStatus.CRAD_NOT_COLOR){    //草鸡功能牌则直接出
-            putCard(player,card); //出牌
-            return true;
+            return putCard(player,card); //出牌
         }else if(prevCard.getType().equals(CardStatus.CARD_TYPE_WILD)){  //上一张为万能牌得分别判断
-            if(card.getColor().equals(prevCard.getChangeColoer())){
-                putCard(player,card);//出牌
-                return true;
+            if(card.getColor().equals(tempColor)){
+                return putCard(player,card);//出牌
             }else {
-                return false;
+                return -2;
             }
         }else {
             if(prevCard.getType().equals(CardStatus.CARD_TYPE_FUNC)){    //上一张为其他功能牌则颜色要一致
                 if(card.getColor().equals(prevCard.getColor())){
-                    putCard(player,card);//出牌
-                    return true;
+                    return putCard(player,card);//出牌
                 }
             }else {                                         //普通牌则判断颜色与大小
                 if(card.getColor().equals(prevCard.getColor()) || card.getNum() == prevCard.getNum()){
-                    putCard(player,card);//出牌
-                    return true;
+                    return putCard(player,card);//出牌
                 }
             }
         }
 
-        return false;
+        return -1;
 
     }
 
@@ -99,6 +102,8 @@ public class GameInfo {
     * @Description: 每一个玩家出牌之后都要进行的结算函数
      *              //因为结算函数里有切换玩家，所以翻开引导牌时，要调用结算函数，导致第一个玩家本来是1号，
      *              而后切换到2号玩家（第一个玩家因随机开始【未写逻辑】），故无碍）
+     *
+     *              //其中 变色牌 与 王牌 的变色没有记在结算功能里  ，记录在游戏信息中
     * @Param: [] 
     * @return: void 
     * @Author: qigang 
@@ -112,11 +117,13 @@ public class GameInfo {
                 direction = (direction == RoomStatus.DISCARD_DIRECTION_NEXT ? RoomStatus.DISCARD_DIRECTION_PREV:RoomStatus.DISCARD_DIRECTION_NEXT);
                 currentPlayer = players.get(getNextPlayer(players,direction,1));
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_ADD2)){
-                currentPlayer = players.get(getNextPlayer(players,direction,1));
+                currentPlayer = players.get(getNextPlayer(players,direction,1));  //下家摸2张并禁止出牌
                 getCard(currentPlayer,2);
+                currentPlayer = players.get(getNextPlayer(players,direction,1));
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_CHANGE)){
                 //变色好烦啊  其实这里好像不需要什么操作.....
                 //2018.7.17  这里还是要改，牌只复制了引用，不可将草鸡牌变色记录在牌对象里，会和其他游戏房间混起来
+                //2018.8.30  中途接了项目，帮cwq复习专业课，一个半月没看，不知道最近能不能改好。。。
                 currentPlayer = players.get(getNextPlayer(players,direction,1));
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_TRUMP)){
                 currentPlayer = players.get(getNextPlayer(players,direction,1)); //切换到下一用户
@@ -129,12 +136,21 @@ public class GameInfo {
         return;
     }
 
-
+    //摸牌的方法
     public void getCard(Player player,int num){
-        player.getRudge().addAll(pileService.getSomeCard(cardPile,num));
+        ArrayList<Card>  tempList = pileService.getSomeCard(cardPile,num);
+        //牌不够摸  要洗牌
+        if(tempList == null){
+            Collections.shuffle(discardPile);
+            cardPile.addAll(discardPile);
+            discardPile.clear();
+            tempList = pileService.getSomeCard(cardPile,num);
+        }
+        player.getRudge().addAll(tempList);
     }
 
 
+    //根据牌对象找出牌，然后移除牌    就是出牌    不记得用没用过这个方法
     public int putCard(Player player,Card card){
         int i = pileService.findCardById(player.getRudge(),card.getId());
         if(i != -1){
@@ -150,6 +166,7 @@ public class GameInfo {
     }
 
 
+    //根据规则获得下一个该出牌的用户
     public int getNextPlayer(ArrayList<Player> players,int direction,int num){
         int i;
         for(i = 0;i< players.size();i++){
@@ -167,7 +184,7 @@ public class GameInfo {
         return i;
     }
 
-
+    //获取用户当前手牌
     public ArrayList<Card> getPlayerRudge(Long playerId){
         for(int i = 0; i< players.size();i++){
             if(players.get(i).getPlayerId().equals(playerId)){
@@ -203,6 +220,7 @@ public class GameInfo {
 
 
 
+    //以下是构造器以及get，set 最后需要修改
 
     public GameInfo(ArrayList<Player> players){
         this.players = players;
@@ -298,5 +316,13 @@ public class GameInfo {
 
     public void setDiscardPile(ArrayList<Card> discardPile) {
         this.discardPile = discardPile;
+    }
+
+    public String getTempColor() {
+        return tempColor;
+    }
+
+    public void setTempColor(String tempColor) {
+        this.tempColor = tempColor;
     }
 }
