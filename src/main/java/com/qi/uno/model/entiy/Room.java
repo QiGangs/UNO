@@ -3,12 +3,9 @@ package com.qi.uno.model.entiy;
 import com.google.common.collect.Lists;
 import com.qi.uno.common.CardStatus;
 import com.qi.uno.common.RoomStatus;
-import com.qi.uno.service.PileService;
-import com.qi.uno.service.impl.PileServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -17,10 +14,10 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @create: 2018-07-05 12:05
  **/
 public class Room {
-    private Long roomId;     //房间ID
+    private Long roomId;     //房String间ID
     private int playerNum;    //玩家个数
     private ArrayList<Player> players;  //玩家列表
-    private Long mainPlayerId;   //房主ID
+    private String mainPlayerId;   //房主ID
     private GameInfo gameInfo;
 
     public Room(Long roomId, int playerNum,Player mainPlayer) {
@@ -66,7 +63,7 @@ public class Room {
 
 
 
-    public ArrayList<Card> getPlayerRudge(Long playerId){
+    public ArrayList<Card> getPlayerRudge(String playerId){
         return gameInfo.getPlayerRudge(playerId);
     }
 
@@ -151,11 +148,11 @@ public class Room {
         this.gameInfo = gameInfo;
     }
 
-    public Long getMainPlayerId() {
+    public String getMainPlayerId() {
         return mainPlayerId;
     }
 
-    public void setMainPlayerId(Long mainPlayerId) {
+    public void setMainPlayerId(String mainPlayerId) {
         this.mainPlayerId = mainPlayerId;
     }
 

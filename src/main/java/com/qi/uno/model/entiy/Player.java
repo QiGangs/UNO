@@ -10,22 +10,22 @@ import java.util.ArrayList;
  * @create: 2018-07-05 12:04
  **/
 public class Player {
-    private Long playerId;
+    private String playerId;
     private String userId;
     private ArrayList<Card> rudge; //描述用户当前手牌
     private int socre;
 
-    public Player(Long playerId) {
+    public Player(String playerId) {
         this.playerId = playerId;
         this.rudge = Lists.newArrayList();
         this.socre = 0;
     }
 
-    public Long getPlayerId() {
+    public String getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(Long playerId) {
+    public void setPlayerId(String playerId) {
         this.playerId = playerId;
     }
 

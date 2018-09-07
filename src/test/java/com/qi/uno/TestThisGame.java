@@ -19,9 +19,9 @@ public class TestThisGame {
         Scanner scanner = new Scanner(System.in);
         InitUtil initUtil = new InitUtil();
         CardHeapStatus.allCard = initUtil.getInitCardHeap();
-        Room room = new Room(new Long(123),3,new Player(new Long(111)));
-        room.addPlayer(new Player(new Long(222)));
-        room.addPlayer(new Player(new Long(333)));
+        Room room = new Room(new Long(123),3,new Player("111"));
+        room.addPlayer(new Player("222"));
+        room.addPlayer(new Player("333"));
         room.startGame();
 
         show(room);
@@ -38,9 +38,9 @@ public class TestThisGame {
                 room.action(room.getCurrentPlayer(), null,true,null);
             }else {
                 switch (x){
-                    case 1:card = room.getPlayerRudge(new Long(111)).get(i);break;
-                    case 2:card = room.getPlayerRudge(new Long(222)).get(i);break;
-                    case 3:card = room.getPlayerRudge(new Long(333)).get(i);break;
+                    case 1:card = room.getPlayerRudge("111").get(i);break;
+                    case 2:card = room.getPlayerRudge("222").get(i);break;
+                    case 3:card = room.getPlayerRudge("333").get(i);break;
                     default:card = null;
                 }
 
@@ -72,9 +72,9 @@ public class TestThisGame {
 
 
     public static void show(Room room){
-        System.out.println("111："+room.getPlayerRudge(new Long(111)).size()+""+room.getPlayerRudge(new Long(111)));
-        System.out.println("222: "+room.getPlayerRudge(new Long(222)).size()+""+room.getPlayerRudge(new Long(222)));
-        System.out.println("333: "+room.getPlayerRudge(new Long(333)).size()+""+room.getPlayerRudge(new Long(333)));
+        System.out.println("111："+room.getPlayerRudge("111").size()+""+room.getPlayerRudge("111"));
+        System.out.println("222: "+room.getPlayerRudge("222").size()+""+room.getPlayerRudge("222"));
+        System.out.println("333: "+room.getPlayerRudge("333").size()+""+room.getPlayerRudge("333"));
 
         System.out.println("当前出牌玩家："+room.getCurrentPlayer().getPlayerId());
         System.out.println("上一张牌："+room.getPrevCard());

@@ -186,7 +186,7 @@ public class GameInfo {
     }
 
     //获取用户当前手牌
-    public ArrayList<Card> getPlayerRudge(Long playerId){
+    public ArrayList<Card> getPlayerRudge(String playerId){
         for(int i = 0; i< players.size();i++){
             if(players.get(i).getPlayerId().equals(playerId)){
                 return players.get(i).getRudge();
