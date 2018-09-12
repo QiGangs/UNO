@@ -25,6 +25,7 @@ public class TestApi {
         return ""+System.currentTimeMillis();
     }
 
+    //创建房间
     @RequestMapping(value = "/room/create")
     public String test1(String playerid){
         Room room = new Room(new Long(1001),2,new Player(playerid));
@@ -32,6 +33,7 @@ public class TestApi {
         return "1001";
     }
 
+    //加入房间
     @RequestMapping(value = "/room/join")
     public String test3(String playerid,String roomid){
         Room room = (Room) GlobalObject.AllRoom.get(roomid);
@@ -39,13 +41,47 @@ public class TestApi {
         return "1001";
     }
 
+    //应当合并于 获取用户信息的接口中   （弃用）
+    //获取房间状态信息，即是否开启游戏
+    @RequestMapping(value = "/room/status/get")
+    public String test6(String playerid,String roomid){
+        Room room = (Room) GlobalObject.AllRoom.get(roomid);
+        room.addPlayer(new Player(playerid));
+        return "1001";
+    }
+
+    //获取游戏的具体信息，谁要出牌，上一张牌是什么，牌堆牌，弃牌堆牌，我这个用户的手牌是什么
+    @RequestMapping(value = "/room/game/info/get")
+    public String test7(String playerid,String roomid){
+//        Room room = (Room) GlobalObject.AllRoom.get(roomid);
+//        room.addPlayer(new Player(playerid));
+        return "";
+    }
+
+
+    //启动游戏 进入游戏界面
+    @RequestMapping(value = "/room/game/start")
+    public String test5(String roomid){
+        Room room = (Room) GlobalObject.AllRoom.get(roomid);
+        boolean res = room.startGame();
+
+        System.out.println("当前出牌玩家："+room.getCurrentPlayer().getPlayerId());
+        System.out.println("上一张牌："+room.getPrevCard());
+        System.out.println("摸牌堆："+room.getCardPile().size());
+        System.out.println("弃牌堆："+room.getDiscardPile().size());
+        return res+"";
+    }
+
+    //如果游戏启动了，要返回正在游戏中的转态，让客户端切换界面
+    //获取房间内用户成员   希望可以切换到流式接口  用 webflux  （需要测试）
     @RequestMapping(value = "/room/player/get",produces="application/json;charset=UTF-8")
     public String test4(String roomid){
-        System.out.println("i am sd");
+//        System.out.println("i am sd");
         Room room = (Room) GlobalObject.AllRoom.get(roomid);
         return JsonUtils.writeObjectToJson(room.getPlayers());
     }
 
+    //登录时要判断用户状态，是不是在某个房间内
     @RequestMapping(value = "/person/status/get")
     public String test(){
         return JsonUtils.writeObjectToJson("heiehiehi");

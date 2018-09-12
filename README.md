@@ -1,5 +1,17 @@
 # uno
 
+
+
+##当前任务
+1. 测试 websocket 是否可以访问 webflux接口
+   这样做不行  引入webscoket
+   https://blog.csdn.net/moshowgame/article/details/80275084
+2. 完成 基本游戏逻辑 
+3.
+
+
+
+
 #### 项目介绍
 这只是后台服务端
 还有一个基于coco2d的客户端
