@@ -29,12 +29,12 @@ public class Test2Api {
     @ResponseBody
     @RequestMapping("/socket/push/{cid}")
     public String pushToWeb(@PathVariable String cid, String message) {
-        try {
-            WebSocketServer.sendInfo(message,cid);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return JsonUtils.writeObjectToJson(cid+"#"+e.getMessage());
-        }
+//        try {
+//            WebSocketServer.sendInfo(message,cid);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return JsonUtils.writeObjectToJson(cid+"#"+e.getMessage());
+//        }
         return JsonUtils.writeObjectToJson(cid);
     }
 }

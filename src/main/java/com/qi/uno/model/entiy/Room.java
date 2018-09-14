@@ -3,13 +3,15 @@ package com.qi.uno.model.entiy;
 import com.google.common.collect.Lists;
 import com.qi.uno.common.CardStatus;
 import com.qi.uno.common.RoomStatus;
+import com.qi.web.websocket.WebSocketServer;
 
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * @description: 描述游戏房间
+ * @description: 描述游戏房间    room里需要启动一个线程将数据往socket里赛
  * @author: qigang
  * @create: 2018-07-05 12:05
  **/
@@ -19,8 +21,13 @@ public class Room {
     private ArrayList<Player> players;  //玩家列表
     private String mainPlayerId;   //房主ID
     private GameInfo gameInfo;
+    //放置几个用户的套接字
+    private CopyOnWriteArraySet<WebSocketServer> webSocketSet = new CopyOnWriteArraySet<WebSocketServer>();
 
-    public Room(Long roomId, int playerNum,Player mainPlayer) {
+
+
+
+    public Room(Long roomId, int playerNum, Player mainPlayer) {
         this.roomId = roomId;
         this.playerNum = playerNum;
         this.players = Lists.newArrayListWithCapacity(playerNum);
@@ -143,6 +150,9 @@ public class Room {
 //    public GameInfo getGameInfo() {
 //        return gameInfo;
 //    }
+    public CopyOnWriteArraySet<WebSocketServer> getWebSocketSet() {
+        return webSocketSet;
+    }
 
     public void setGameInfo(GameInfo gameInfo) {
         this.gameInfo = gameInfo;

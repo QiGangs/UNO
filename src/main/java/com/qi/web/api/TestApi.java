@@ -33,6 +33,13 @@ public class TestApi {
         return "1001";
     }
 
+    /**
+    * @Description: 加入房间之后需要 开始建立websocket  传递房间信息以及 游戏信息
+    * @Param: [playerid, roomid]
+    * @return: java.lang.String
+    * @Author: qigang
+    * @Date: 2018/9/14
+    */
     //加入房间
     @RequestMapping(value = "/room/join")
     public String test3(String playerid,String roomid){
@@ -40,6 +47,11 @@ public class TestApi {
         room.addPlayer(new Player(playerid));
         return "1001";
     }
+
+    //以下接口当由websocket传递数据，不在使用http的形式
+
+
+
 
     //应当合并于 获取用户信息的接口中   （弃用）
     //获取房间状态信息，即是否开启游戏
