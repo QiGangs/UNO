@@ -21,8 +21,10 @@ public class Room {
     private ArrayList<Player> players;  //玩家列表
     private String mainPlayerId;   //房主ID
     private GameInfo gameInfo;
+    private Boolean isStarted = false;
     //放置几个用户的套接字
     private CopyOnWriteArraySet<WebSocketServer> webSocketSet = new CopyOnWriteArraySet<WebSocketServer>();
+
 
 
 
@@ -100,6 +102,7 @@ public class Room {
         }
         gameInfo = new GameInfo(players);
         gameInfo.startGame(players.get(0));
+        isStarted = true;
         return true;
     }
 
@@ -164,6 +167,10 @@ public class Room {
 
     public void setMainPlayerId(String mainPlayerId) {
         this.mainPlayerId = mainPlayerId;
+    }
+
+    public Boolean getStarted() {
+        return isStarted;
     }
 
     @Override

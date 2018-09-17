@@ -72,7 +72,7 @@ public class GameInfo {
         if(card == null && isGetCard == true){
             getCard(player,1);
             currentPlayer = players.get(getNextPlayer(players,direction,1));
-            return -2;
+            return 1;
         }
         if(card.getColor() == CardStatus.CRAD_NOT_COLOR){    //草鸡功能牌则直接出
             return putCard(player,card); //出牌

@@ -1,5 +1,6 @@
 package com.qi.web.websocket;
 
+import com.qi.uno.common.RoomStatus;
 import com.qi.uno.model.entiy.Room;
 import com.qi.web.common.GlobalObject;
 import org.springframework.stereotype.Component;
@@ -20,16 +21,6 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Component
 public class WebSocketServer {
 
-//    static Log log=LogFactory.get(WebSocketServer.class);
-    //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
-//    private static int onlineCount = 0;
-    //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
-//    private static CopyOnWriteArraySet<WebSocketServer> webSocketSet = new CopyOnWriteArraySet<WebSocketServer>();
-    //与某个客户端的连接会话，需要通过它来给客户端发送数据
-
-    //接收sid
-//    private String sid="";
-
     private Session session;
     private String playerid="";
 
@@ -41,17 +32,16 @@ public class WebSocketServer {
     * @Date: 2018/9/14 
     */
     @OnOpen
-    public void onOpen(Session session,@PathParam("roomid") String roomid,@PathParam("playerid") String playerid) {
+    public void onOpen(Session session,@PathParam("roomid") String roomid,@PathParam("playerid") String playerid) throws IOException {
             //以后需要修改为传递授权码 auth  更加auth获得playerid，返回赋值给sid
         this.session = session;
         Room room = (Room) GlobalObject.AllRoom.get(roomid);
         room.getWebSocketSet().add(this);
         this.playerid=playerid;
-        try {
-            sendMessage("连接成功");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        //回传房间内成员
+        RoomStatus.roomPlayer(roomid,playerid);
+
     }
 
     /**
@@ -61,8 +51,6 @@ public class WebSocketServer {
     public void onClose(@PathParam("roomid") String roomid) {
         Room room = (Room) GlobalObject.AllRoom.get(roomid);
         room.getWebSocketSet().remove(this);  //从set中删除
-//        subOnlineCount();           //在线数减1
-//        log.info("有一连接关闭！当前在线人数为" + getOnlineCount());
     }
 
     /**
@@ -70,21 +58,8 @@ public class WebSocketServer {
      *
      * @param message 客户端发送过来的消息*/
     @OnMessage
-    public void onMessage(String message, Session session) {
-
-        //to-do
-        //做接收到数据后的操作
-
-
-//        log.info("收到来自窗口"+sid+"的信息:"+message);
-        //群发消息
-//        for (WebSocketServer item : webSocketSet) {
-//            try {
-//                item.sendMessage(message);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+    public void onMessage(@PathParam("roomid")String roomid,@PathParam("playerid") String playerid,String message, Session session) throws IOException {
+        RoomStatus.changeRoom(roomid,playerid,message);
     }
 
     /**
@@ -94,7 +69,6 @@ public class WebSocketServer {
      */
     @OnError
     public void onError(Session session, Throwable error) {
-//        log.error("发生错误");
         error.printStackTrace();
     }
     /**
@@ -104,6 +78,9 @@ public class WebSocketServer {
         this.session.getBasicRemote().sendText(message);
     }
 
+    public String getPlayerid() {
+        return playerid;
+    }
 
     /**
      * 群发自定义消息
@@ -124,16 +101,4 @@ public class WebSocketServer {
 //        }
 //    }
 
-
-//    public static synchronized int getOnlineCount() {
-//        return onlineCount;
-//    }
-//
-//    public static synchronized void addOnlineCount() {
-//        WebSocketServer.onlineCount++;
-//    }
-//
-//    public static synchronized void subOnlineCount() {
-//        WebSocketServer.onlineCount--;
-//    }
 }

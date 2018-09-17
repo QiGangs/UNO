@@ -44,6 +44,9 @@ public class TestApi {
     @RequestMapping(value = "/room/join")
     public String test3(String playerid,String roomid){
         Room room = (Room) GlobalObject.AllRoom.get(roomid);
+        if(!room.getStarted()){
+            return "error";
+        }
         room.addPlayer(new Player(playerid));
         return "1001";
     }
