@@ -4,6 +4,7 @@ import com.qi.uno.common.RoomStatus;
 import com.qi.uno.model.entiy.Player;
 import com.qi.uno.model.entiy.Room;
 import com.qi.uno.util.RoomUtil;
+import com.qi.util.json.JsonUtils;
 import com.qi.web.common.GlobalObject;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -37,19 +39,26 @@ public class WebSocketServer {
     * @Date: 2018/9/14 
     */
     @OnOpen
-    public void onOpen(Session session,@PathParam("roomid") String roomid,@PathParam("playerid") String playerid) throws IOException {
+    public void onOpen(Session session,@PathParam("roomid") String roomid,@PathParam("playerid") String playerid) throws IOException, InterruptedException {
             //以后需要修改为传递授权码 auth  更加auth获得playerid，返回赋值给sid
         this.session = session;
 
         Room room = null;
         if(roomid.equals(RoomStatus.DEFAULT_ROOM_ID)){
+            //新建房间的指令
             room = Room.getRoom(RoomUtil.getRoomId(),RoomStatus.DEFAULT_ROOM_PLAYER_NUM,Player.getPlayer(playerid));
             GlobalObject.AllRoom.put(room.getRoomId(),room);
         }else {
             room  = (Room) GlobalObject.AllRoom.get(roomid);
             if(room == null){
-                //直接创建房间
+                //房间不存在就直接创建房间
+                room = Room.getRoom(RoomUtil.getRoomId(),RoomStatus.DEFAULT_ROOM_PLAYER_NUM,Player.getPlayer(playerid));
+                GlobalObject.AllRoom.put(room.getRoomId(),room);
+            }else {
+                //不然此用户加入房间
+                room.addPlayer(Player.getPlayer(playerid));
             }
+
         }
         room.getWebSocketSet().add(this);
 
@@ -58,7 +67,6 @@ public class WebSocketServer {
 
         RoomUtil.sendRoomInfoBackClient(room);
 
-        System.out.println("open success");
 
 
 
@@ -68,9 +76,9 @@ public class WebSocketServer {
      * 连接关闭调用的方法
      */
     @OnClose
-    public void onClose(@PathParam("roomid") String roomid) {
-//        Room room = (Room) GlobalObject.AllRoom.get(roomid);
-//        room.getWebSocketSet().remove(this);  //从set中删除
+    public void onClose() {
+        room.getWebSocketSet().remove(this);  //从set中删除
+        System.out.println(room.getWebSocketSet().size());
         System.out.println("over!!!!");
     }
 
@@ -79,10 +87,14 @@ public class WebSocketServer {
      *
      * @param message 客户端发送过来的消息*/
     @OnMessage
-    public void onMessage(@PathParam("roomid")String roomid,@PathParam("playerid") String playerid,String message, Session session) throws IOException {
-        //RoomStatus.changeRoom(roomid,playerid,message);
-        System.out.println(message);
-        sendMessage("hello,sb");
+    public void onMessage(String message) throws IOException {
+        Map<String,Object> map = JsonUtils.readJsonToMap(message);
+        int flag = (Integer) map.get("type");
+        if(flag == -1){
+            onClose();
+        }
+
+        //sendMessage("hello,sb");
     }
 
     /**
@@ -98,6 +110,7 @@ public class WebSocketServer {
      * 实现服务器主动推送
      */
     public void sendMessage(String message) throws IOException {
+        System.out.println("send to :" +getPlayerid());
         this.session.getBasicRemote().sendText(message);
     }
 
