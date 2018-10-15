@@ -55,7 +55,9 @@ public class SocketServiceImpl implements SocketService {
             Message message = Message.getMessage(MessageStatus.MESSAGE_TYPE_EXIT_GAME,
                     null);
             webSocket.sendMessage(JsonUtils.writeObjectToJson(message));
+            webSocket.onClose();
         }
+
     }
 
     @Override
@@ -90,5 +92,14 @@ public class SocketServiceImpl implements SocketService {
         startGame(room);
 
         //向客户端分发游戏信息
+    }
+
+    @Override
+    public void sendRoomInfoToAll(Room room) throws IOException, InterruptedException {
+        for(WebSocketServer webSocket : room.getWebSocketSet()){
+            Message message = Message.getMessage(MessageStatus.MESSAGE_TYPE_ROOM,
+                    DataRoom.getDataRoom(room.getRoomId(),room.getPlayerNum(), room.getPlayers(),room.getStarted(),room.getMainPlayerId()));
+            webSocket.sendMessage(JsonUtils.writeObjectToJson(message));
+        }
     }
 }

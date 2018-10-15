@@ -33,6 +33,9 @@ public class WebSocketServer {
     private Room room;
     private Session session;
     private String playerid="";
+    private Player player;
+
+    private int flag = 1;
 
     /** 
     * @Description: 接受来自客户端的连接，根据参数将对应的连接放入对应的房间
@@ -45,21 +48,29 @@ public class WebSocketServer {
     public void onOpen(Session session,@PathParam("roomid") String roomid,@PathParam("playerid") String playerid) throws IOException, InterruptedException {
             //以后需要修改为传递授权码 auth  更加auth获得playerid，返回赋值给sid
         this.session = session;
-
+        player = Player.getPlayer(playerid);
         Room room = null;
         if(roomid.equals(RoomStatus.DEFAULT_ROOM_ID)){
             //新建房间的指令
-            room = Room.getRoom(socketService.getRoomId(),RoomStatus.DEFAULT_ROOM_PLAYER_NUM,Player.getPlayer(playerid));
+            room = Room.getRoom(socketService.getRoomId(),RoomStatus.DEFAULT_ROOM_PLAYER_NUM,player);
             GlobalObject.AllRoom.put(room.getRoomId(),room);
         }else {
             room  = (Room) GlobalObject.AllRoom.get(roomid);
             if(room == null){
                 //房间不存在就直接创建房间
-                room = Room.getRoom(socketService.getRoomId(),RoomStatus.DEFAULT_ROOM_PLAYER_NUM,Player.getPlayer(playerid));
+                room = Room.getRoom(socketService.getRoomId(),RoomStatus.DEFAULT_ROOM_PLAYER_NUM,player);
                 GlobalObject.AllRoom.put(room.getRoomId(),room);
             }else {
                 //不然此用户加入房间
-                room.addPlayer(Player.getPlayer(playerid));
+                if(room.getPlayers().size()<room.getPlayerNum()){
+                    room.addPlayer(player);
+                }else {
+                    //直接关闭套接字
+                    flag = 0;
+                    onClose();
+                    return;
+                }
+
             }
 
         }
@@ -77,8 +88,12 @@ public class WebSocketServer {
      */
     @OnClose
     public void onClose() {
+        if(flag == 0){
+            return;
+        }
         //从set中删除
         room.getWebSocketSet().remove(this);
+        room.getPlayers().remove(player);
         if(room.getWebSocketSet().size() == 0){
             GlobalObject.AllRoom.remove(room.getRoomId());
         }
@@ -93,8 +108,10 @@ public class WebSocketServer {
     public void onMessage(String message) throws IOException, InterruptedException {
         Map<String,Object> map = JsonUtils.readJsonToMap(message);
         int flag = (Integer) map.get("type");
+        System.out.println(map.get("data"));
         if(flag == -1 && !room.getMainPlayerId().equals(map.get("data"))){
             onClose();
+            socketService.sendRoomInfoToAll(room);
         }else if(flag == -1 && room.getMainPlayerId().equals(map.get("data"))){
             //移除所有客户端
             socketService.sendRoomMissToAll(room);

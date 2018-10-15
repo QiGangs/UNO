@@ -22,4 +22,6 @@ public interface SocketService {
 
      void sendStartGameToAll(Room room) throws IOException, InterruptedException;
 
+     void sendRoomInfoToAll(Room room) throws IOException, InterruptedException;
+
 }
