@@ -16,7 +16,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @create: 2018-07-05 12:05
  **/
 public class Room {
-    private Long roomId;     //房String间ID
+    private String roomId;     //房String间ID
     private int playerNum;    //玩家个数
     private ArrayList<Player> players;  //玩家列表
     private String mainPlayerId;   //房主ID
@@ -26,10 +26,12 @@ public class Room {
     private CopyOnWriteArraySet<WebSocketServer> webSocketSet = new CopyOnWriteArraySet<WebSocketServer>();
 
 
+    public static Room getRoom(String roomId, int playerNum, Player mainPlayer){
+        return new Room(roomId,playerNum,mainPlayer);
+    }
 
 
-
-    public Room(Long roomId, int playerNum, Player mainPlayer) {
+    private Room(String roomId, int playerNum, Player mainPlayer) {
         this.roomId = roomId;
         this.playerNum = playerNum;
         this.players = Lists.newArrayListWithCapacity(playerNum);
@@ -126,11 +128,11 @@ public class Room {
 
 
     //get set
-    public Long getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Long roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 

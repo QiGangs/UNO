@@ -10,5 +10,5 @@ import java.util.concurrent.ConcurrentMap;
  * @create: 2018-09-01 14:41
  **/
 public class GlobalObject {
-    public static ConcurrentMap<Object, Object> AllRoom;
+    public static ConcurrentMap<String, Object> AllRoom;
 }

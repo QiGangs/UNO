@@ -15,7 +15,12 @@ public class Player {
     private ArrayList<Card> rudge; //描述用户当前手牌
     private int socre;
 
-    public Player(String playerId) {
+
+    public static Player getPlayer(String playerId){
+        return new Player(playerId);
+    }
+
+    private Player(String playerId) {
         this.playerId = playerId;
         this.rudge = Lists.newArrayList();
         this.socre = 0;

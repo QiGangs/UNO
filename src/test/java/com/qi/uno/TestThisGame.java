@@ -19,9 +19,9 @@ public class TestThisGame {
         Scanner scanner = new Scanner(System.in);
         InitUtil initUtil = new InitUtil();
         CardHeapStatus.allCard = initUtil.getInitCardHeap();
-        Room room = new Room(new Long(123),3,new Player("111"));
-        room.addPlayer(new Player("222"));
-        room.addPlayer(new Player("333"));
+        Room room =Room.getRoom("123",3,Player.getPlayer("111"));
+        room.addPlayer(Player.getPlayer("222"));
+        room.addPlayer(Player.getPlayer("333"));
         room.startGame();
 
         show(room);

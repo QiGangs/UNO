@@ -1,7 +1,9 @@
 package com.qi.web.websocket;
 
 import com.qi.uno.common.RoomStatus;
+import com.qi.uno.model.entiy.Player;
 import com.qi.uno.model.entiy.Room;
+import com.qi.uno.util.RoomUtil;
 import com.qi.web.common.GlobalObject;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 /**
  * @description:   serverEndpoint 需要提供 用户角色,房间号，
  *                  此服务只用来建立socket   webSocket由房间进行管理
+ *                  事件驱动
  * @author: qigang
  * @create: 2018-09-12 14:28
  **/
@@ -21,12 +24,14 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Component
 public class WebSocketServer {
 
+    //记录room来判定套接字从属房间
+    private Room room;
     private Session session;
     private String playerid="";
 
     /** 
     * @Description: 接受来自客户端的连接，根据参数将对应的连接放入对应的房间
-    * @Param: [session, roomid, playerid] 
+    * @Param: [session, roomid, playerid]  roomid = 000000 执行创建操作
     * @return: void 
     * @Author: qigang 
     * @Date: 2018/9/14 
@@ -35,12 +40,27 @@ public class WebSocketServer {
     public void onOpen(Session session,@PathParam("roomid") String roomid,@PathParam("playerid") String playerid) throws IOException {
             //以后需要修改为传递授权码 auth  更加auth获得playerid，返回赋值给sid
         this.session = session;
-        Room room = (Room) GlobalObject.AllRoom.get(roomid);
+
+        Room room = null;
+        if(roomid.equals(RoomStatus.DEFAULT_ROOM_ID)){
+            room = Room.getRoom(RoomUtil.getRoomId(),RoomStatus.DEFAULT_ROOM_PLAYER_NUM,Player.getPlayer(playerid));
+            GlobalObject.AllRoom.put(room.getRoomId(),room);
+        }else {
+            room  = (Room) GlobalObject.AllRoom.get(roomid);
+            if(room == null){
+                //直接创建房间
+            }
+        }
         room.getWebSocketSet().add(this);
+
+        this.room = room;
         this.playerid=playerid;
 
-        //回传房间内成员
-        RoomStatus.roomPlayer(roomid,playerid);
+        RoomUtil.sendRoomInfoBackClient(room);
+
+        System.out.println("open success");
+
+
 
     }
 
@@ -49,8 +69,9 @@ public class WebSocketServer {
      */
     @OnClose
     public void onClose(@PathParam("roomid") String roomid) {
-        Room room = (Room) GlobalObject.AllRoom.get(roomid);
-        room.getWebSocketSet().remove(this);  //从set中删除
+//        Room room = (Room) GlobalObject.AllRoom.get(roomid);
+//        room.getWebSocketSet().remove(this);  //从set中删除
+        System.out.println("over!!!!");
     }
 
     /**
@@ -59,7 +80,9 @@ public class WebSocketServer {
      * @param message 客户端发送过来的消息*/
     @OnMessage
     public void onMessage(@PathParam("roomid")String roomid,@PathParam("playerid") String playerid,String message, Session session) throws IOException {
-        RoomStatus.changeRoom(roomid,playerid,message);
+        //RoomStatus.changeRoom(roomid,playerid,message);
+        System.out.println(message);
+        sendMessage("hello,sb");
     }
 
     /**
