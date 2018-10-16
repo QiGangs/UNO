@@ -30,7 +30,6 @@ public class WxLoginApi {
         JsonObject jsonObject = (JsonObject) new JsonParser().parse(res);
         String openid = jsonObject.get("openid").getAsString();
 
-
         return openid;
 
 //        Long customid = loginService.getStudentidByOpenid(openid);   //openid 换学号

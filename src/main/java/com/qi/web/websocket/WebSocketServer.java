@@ -50,6 +50,7 @@ public class WebSocketServer {
         this.session = session;
         player = Player.getPlayer(playerid);
         Room room = null;
+        System.out.println("start game");
         if(roomid.equals(RoomStatus.DEFAULT_ROOM_ID)){
             //新建房间的指令
             room = Room.getRoom(socketService.getRoomId(),RoomStatus.DEFAULT_ROOM_PLAYER_NUM,player);
@@ -81,6 +82,8 @@ public class WebSocketServer {
 
         socketService.sendRoomInfoBackClient(room);
 
+        System.out.println("open");
+
     }
 
     /**
@@ -111,7 +114,8 @@ public class WebSocketServer {
         System.out.println(map.get("data"));
         if(flag == -1 && !room.getMainPlayerId().equals(map.get("data"))){
             onClose();
-            socketService.sendRoomInfoToAll(room);
+            //我也不记得这个代码干啥了
+            //socketService.sendRoomInfoToAll(room);
         }else if(flag == -1 && room.getMainPlayerId().equals(map.get("data"))){
             //移除所有客户端
             socketService.sendRoomMissToAll(room);
@@ -119,8 +123,13 @@ public class WebSocketServer {
             if(socketService.isCanStartGame(room)){
                 socketService.sendStartGameToAll(room);
             }
-        }
+        }else if(flag == 3){
+            //接收到游戏消息
+            //进行逻辑处理
+            //先做小程序显示的界面
+        }else {
 
+        }
         //sendMessage("hello,sb");
     }
 
@@ -143,6 +152,10 @@ public class WebSocketServer {
 
     public String getPlayerid() {
         return playerid;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     /**

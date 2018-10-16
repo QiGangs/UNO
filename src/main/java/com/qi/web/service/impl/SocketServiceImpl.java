@@ -1,8 +1,10 @@
 package com.qi.web.service.impl;
 
+import com.qi.uno.model.entiy.Player;
 import com.qi.uno.model.entiy.Room;
 import com.qi.util.json.JsonUtils;
 import com.qi.web.common.MessageStatus;
+import com.qi.web.model.DataGameInfo;
 import com.qi.web.model.DataRoom;
 import com.qi.web.model.Message;
 import com.qi.web.service.SocketService;
@@ -91,14 +93,14 @@ public class SocketServiceImpl implements SocketService {
         Thread.sleep(1000);
         startGame(room);
 
-        //向客户端分发游戏信息
+        sendRoomInfoToAll(room);
     }
 
     @Override
     public void sendRoomInfoToAll(Room room) throws IOException, InterruptedException {
         for(WebSocketServer webSocket : room.getWebSocketSet()){
-            Message message = Message.getMessage(MessageStatus.MESSAGE_TYPE_ROOM,
-                    DataRoom.getDataRoom(room.getRoomId(),room.getPlayerNum(), room.getPlayers(),room.getStarted(),room.getMainPlayerId()));
+            Message message = Message.getMessage(MessageStatus.MESSAGE_TYPE_GAME_INFO,
+                    DataGameInfo.getInstance(room.getRoomId(),room.getCardPile().size(),room.getDiscardPile().size(),room.getPrevCard(),webSocket.getPlayer(),room.getCurrentPlayer().getPlayerId()));
             webSocket.sendMessage(JsonUtils.writeObjectToJson(message));
         }
     }
