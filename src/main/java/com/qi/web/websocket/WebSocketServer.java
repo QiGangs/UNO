@@ -101,6 +101,7 @@ public class WebSocketServer {
             GlobalObject.AllRoom.remove(room.getRoomId());
         }
         System.out.println("over!!!!");
+
     }
 
     /**
@@ -111,7 +112,7 @@ public class WebSocketServer {
     public void onMessage(String message) throws IOException, InterruptedException {
         Map<String,Object> map = JsonUtils.readJsonToMap(message);
         int flag = (Integer) map.get("type");
-        System.out.println(map.get("data"));
+//        System.out.println(map.get("data"));
         if(flag == -1 && !room.getMainPlayerId().equals(map.get("data"))){
             onClose();
             //我也不记得这个代码干啥了
@@ -124,9 +125,9 @@ public class WebSocketServer {
                 socketService.sendStartGameToAll(room);
             }
         }else if(flag == 3){
-            //接收到游戏消息
-            //进行逻辑处理
-            //先做小程序显示的界面
+            Object tmp = map.get("data");
+            socketService.dealPutCardAction(room,tmp);
+//            System.out.println(tmp.toString());
         }else {
 
         }

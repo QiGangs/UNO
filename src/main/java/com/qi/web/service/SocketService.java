@@ -25,4 +25,6 @@ public interface SocketService {
 
      void sendRoomInfoToAll(Room room) throws IOException, InterruptedException;
 
+     void dealPutCardAction(Room room,Object info)throws IOException, InterruptedException;
+
 }

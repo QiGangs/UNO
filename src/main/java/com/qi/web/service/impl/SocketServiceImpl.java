@@ -1,5 +1,7 @@
 package com.qi.web.service.impl;
 
+import com.qi.uno.common.CardHeapStatus;
+import com.qi.uno.model.entiy.Card;
 import com.qi.uno.model.entiy.Player;
 import com.qi.uno.model.entiy.Room;
 import com.qi.util.json.JsonUtils;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.constraints.Null;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @description:
@@ -102,6 +105,36 @@ public class SocketServiceImpl implements SocketService {
             Message message = Message.getMessage(MessageStatus.MESSAGE_TYPE_GAME_INFO,
                     DataGameInfo.getInstance(room.getRoomId(),room.getCardPile().size(),room.getDiscardPile().size(),room.getPrevCard(),webSocket.getPlayer(),room.getCurrentPlayer().getPlayerId()));
             webSocket.sendMessage(JsonUtils.writeObjectToJson(message));
+        }
+    }
+
+    @Override
+    public void dealPutCardAction(Room room, Object info) throws IOException, InterruptedException {
+        int cardid = (Integer) ((Map)info).get("putcardid");
+        String playerid = (String)((Map)info).get("putplayerid");
+
+        Player player = null;
+        Card card = null;
+
+        for(Player p : room.getPlayers()){
+            if(p.getPlayerId().equals(playerid)){
+                player = p;
+            }
+        }
+        for(Card c : CardHeapStatus.allCard){
+            if(c.getId() == cardid){
+                card = c;
+            }else {
+//                System.out.println(" before return  put card error in SocketServiceImpl");
+//                return;
+            }
+        }
+
+        int res = room.action(player,card,false,null);
+        if(res == 1){
+            sendRoomInfoToAll(room);
+        }else {
+            System.out.println("put card error in SocketServiceImpl");
         }
     }
 }
