@@ -23,7 +23,7 @@ public class MD5Util {
      * 普通MD5
      * @author daniel
      * @time 2016-6-11 下午8:00:28
-     * @param inStr
+     * @param input
      * @return
      */
     public static String MD5(String input) {
