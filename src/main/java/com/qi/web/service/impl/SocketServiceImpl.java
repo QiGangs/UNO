@@ -112,29 +112,48 @@ public class SocketServiceImpl implements SocketService {
     public void dealPutCardAction(Room room, Object info) throws IOException, InterruptedException {
         int cardid = (Integer) ((Map)info).get("putcardid");
         String playerid = (String)((Map)info).get("putplayerid");
+        String tempColor = null;
+        String _tempColor = (String)((Map)info).get("tempcolor");
+
+        if(!(_tempColor == null || "".equals(_tempColor))){
+            tempColor = _tempColor;
+        }
+
+        //System.out.println(tempColor+_tempColor);
 
         Player player = null;
         Card card = null;
 
-        for(Player p : room.getPlayers()){
-            if(p.getPlayerId().equals(playerid)){
+        for (Player p : room.getPlayers()) {
+            if (p.getPlayerId().equals(playerid)) {
                 player = p;
             }
         }
-        for(Card c : CardHeapStatus.allCard){
-            if(c.getId() == cardid){
-                card = c;
-            }else {
+
+        if(cardid != -1) {
+
+            for (Card c : CardHeapStatus.allCard) {
+                if (c.getId() == cardid) {
+                    card = c;
+                } else {
 //                System.out.println(" before return  put card error in SocketServiceImpl");
 //                return;
+                }
             }
-        }
 
-        int res = room.action(player,card,false,null);
-        if(res == 1){
-            sendRoomInfoToAll(room);
-        }else {
-            System.out.println("put card error in SocketServiceImpl");
+            int res = room.action(player, card, false, tempColor);
+            if (res == 1) {
+                sendRoomInfoToAll(room);
+            } else {
+                System.out.println("put card error in SocketServiceImpl");
+            }
+        }else if(cardid == -1){
+            int res = room.action(player, null,true,null);
+            if (res == 1) {
+                sendRoomInfoToAll(room);
+            } else {
+                System.out.println("get card error in SocketServiceImpl");
+            }
         }
     }
 }

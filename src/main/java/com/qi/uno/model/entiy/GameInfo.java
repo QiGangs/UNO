@@ -125,6 +125,7 @@ public class GameInfo {
                 //2018.7.17  这里还是要改，牌只复制了引用，不可将草鸡牌变色记录在牌对象里，会和其他游戏房间混起来
                 //2018.8.30  中途接了项目，帮cwq复习专业课，一个半月没看，不知道最近能不能改好。。。
                 //2018.9.1   今天又想起来了，想了想，剩下的bug还是等游戏基本能跑了再来改吧
+                //2018.11.29 啊！！！！现在有些游戏基本能跑了，但是bug是什么已经不记得了
                 currentPlayer = players.get(getNextPlayer(players,direction,1));
             }else if(prevCard.getFunc().equals(CardStatus.CRAD_FUNC_TRUMP)){
                 currentPlayer = players.get(getNextPlayer(players,direction,1)); //切换到下一用户
