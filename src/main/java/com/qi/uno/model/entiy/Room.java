@@ -72,6 +72,9 @@ public class Room {
 
     }
 
+    public String getTempColor(){
+        return gameInfo.getTempColor();
+    }
 
 
     public ArrayList<Card> getPlayerRudge(String playerId){
@@ -116,7 +119,7 @@ public class Room {
 
     //一局游戏结束，清理游戏信息
     public void gameOver(Player playerWin){
-
+        isStarted = false;
         //此处应该统计分数并记录到数据库中
 
         gameInfo = null;

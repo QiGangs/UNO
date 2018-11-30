@@ -103,10 +103,11 @@ public class SocketServiceImpl implements SocketService {
     public void sendRoomInfoToAll(Room room) throws IOException, InterruptedException {
         for(WebSocketServer webSocket : room.getWebSocketSet()){
             Message message = Message.getMessage(MessageStatus.MESSAGE_TYPE_GAME_INFO,
-                    DataGameInfo.getInstance(room.getRoomId(),room.getCardPile().size(),room.getDiscardPile().size(),room.getPrevCard(),webSocket.getPlayer(),room.getCurrentPlayer().getPlayerId()));
+                    DataGameInfo.getInstancewithcolor(room.getRoomId(),room.getCardPile().size(),room.getDiscardPile().size(),room.getPrevCard(),webSocket.getPlayer(),room.getCurrentPlayer().getPlayerId(),room.getTempColor()));
             webSocket.sendMessage(JsonUtils.writeObjectToJson(message));
         }
     }
+
 
     @Override
     public void dealPutCardAction(Room room, Object info) throws IOException, InterruptedException {
@@ -144,7 +145,10 @@ public class SocketServiceImpl implements SocketService {
             int res = room.action(player, card, false, tempColor);
             if (res == 1) {
                 sendRoomInfoToAll(room);
-            } else {
+            } else if(res == -1){
+                sendGameoverToAll(room,player);
+            }
+            else  {
                 System.out.println("put card error in SocketServiceImpl");
             }
         }else if(cardid == -1){
@@ -154,6 +158,16 @@ public class SocketServiceImpl implements SocketService {
             } else {
                 System.out.println("get card error in SocketServiceImpl");
             }
+        }
+    }
+
+    @Override
+    public void sendGameoverToAll(Room room,Player winer) throws IOException, InterruptedException {
+        for(WebSocketServer webSocket : room.getWebSocketSet()){
+            Message message = Message.getMessage(MessageStatus.MESSAGE_TYPE_GAME_OVER,
+                    null);
+            //这里需要回传winer的信息
+            webSocket.sendMessage(JsonUtils.writeObjectToJson(message));
         }
     }
 }

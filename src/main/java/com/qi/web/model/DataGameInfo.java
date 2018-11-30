@@ -21,6 +21,8 @@ public class DataGameInfo implements Data {
     private Player currentPlayer;
     //应该出牌的用户Id
     private String canPutPlayerId;
+    //有时候需要回传的被改变的颜色
+    private String truetempcolor;
 
     private DataGameInfo(String roomid, Integer cardPileNum, Integer disCardPileNum, Card prevCard, Player currentPlayer,String canPutPlayerId ) {
         this.roomid = roomid;
@@ -31,8 +33,22 @@ public class DataGameInfo implements Data {
         this.canPutPlayerId = canPutPlayerId;
     }
 
-    public static DataGameInfo getInstance(String roomid, Integer cardPileNum, Integer disCardPileNum, Card prevCard, Player currentPlayer,String canPutPlayerId){
+    public DataGameInfo(String roomid, Integer cardPileNum, Integer disCardPileNum, Card prevCard, Player currentPlayer, String canPutPlayerId, String truetempcolor) {
+        this.roomid = roomid;
+        this.cardPileNum = cardPileNum;
+        this.disCardPileNum = disCardPileNum;
+        this.prevCard = prevCard;
+        this.currentPlayer = currentPlayer;
+        this.canPutPlayerId = canPutPlayerId;
+        this.truetempcolor = truetempcolor;
+    }
+
+    public static DataGameInfo getInstance(String roomid, Integer cardPileNum, Integer disCardPileNum, Card prevCard, Player currentPlayer, String canPutPlayerId){
         return new DataGameInfo(roomid,cardPileNum,disCardPileNum,prevCard,currentPlayer,canPutPlayerId);
+    }
+
+    public static DataGameInfo getInstancewithcolor(String roomid, Integer cardPileNum, Integer disCardPileNum, Card prevCard, Player currentPlayer, String canPutPlayerId,String tempcolor){
+        return new DataGameInfo(roomid,cardPileNum,disCardPileNum,prevCard,currentPlayer,canPutPlayerId,tempcolor);
     }
 
     public String getRoomid() {
@@ -85,6 +101,15 @@ public class DataGameInfo implements Data {
         this.canPutPlayerId = canPutPlayerId;
     }
 
+
+    public String getTruetempcolor() {
+        return truetempcolor;
+    }
+
+    public void setTruetempcolor(String truetempcolor) {
+        this.truetempcolor = truetempcolor;
+    }
+
     @Override
     public String toString() {
         return "DataGameInfo{" +
@@ -94,6 +119,7 @@ public class DataGameInfo implements Data {
                 ", prevCard=" + prevCard +
                 ", currentPlayer=" + currentPlayer +
                 ", canPutPlayerId='" + canPutPlayerId + '\'' +
+                ", truetempcolor='" + truetempcolor + '\'' +
                 '}';
     }
 }

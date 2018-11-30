@@ -27,4 +27,6 @@ public interface SocketService {
 
      void dealPutCardAction(Room room,Object info)throws IOException, InterruptedException;
 
+     void sendGameoverToAll(Room room,Player winer) throws IOException, InterruptedException;
+
 }
