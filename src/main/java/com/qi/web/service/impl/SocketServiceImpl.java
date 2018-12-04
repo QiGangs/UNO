@@ -67,7 +67,10 @@ public class SocketServiceImpl implements SocketService {
 
     @Override
     public Boolean isCanStartGame(Room room) {
-        if(room.getPlayers().size() < room.getPlayerNum()){
+//        if(room.getPlayers().size() < room.getPlayerNum()){
+//            return false;
+//        }
+        if(room.getPlayers().size() < 2){
             return false;
         }
         return true;

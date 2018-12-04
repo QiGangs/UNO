@@ -53,13 +53,13 @@ public class WebSocketServer {
         System.out.println("start game");
         if(roomid.equals(RoomStatus.DEFAULT_ROOM_ID)){
             //新建房间的指令
-            room = Room.getRoom(socketService.getRoomId(),RoomStatus.DEFAULT_ROOM_PLAYER_NUM,player);
+            room = Room.getRoom(socketService.getRoomId(),RoomStatus.DEFAULT_ROOM_PLAYER_ALL_NUM,player);
             GlobalObject.AllRoom.put(room.getRoomId(),room);
         }else {
             room  = (Room) GlobalObject.AllRoom.get(roomid);
             if(room == null){
                 //房间不存在就直接创建房间
-                room = Room.getRoom(socketService.getRoomId(),RoomStatus.DEFAULT_ROOM_PLAYER_NUM,player);
+                room = Room.getRoom(socketService.getRoomId(),RoomStatus.DEFAULT_ROOM_PLAYER_ALL_NUM,player);
                 GlobalObject.AllRoom.put(room.getRoomId(),room);
             }else {
                 //不然此用户加入房间

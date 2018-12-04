@@ -102,7 +102,10 @@ public class Room {
         players.remove(player);
     }
     public boolean startGame(){
-        if(playerNum != players.size()){
+//        if(playerNum != players.size()){
+//            return false;
+//        }
+        if(playerNum < RoomStatus.DEFAULT_ROOM_PLAYER_NUM){
             return false;
         }
         gameInfo = new GameInfo(players);

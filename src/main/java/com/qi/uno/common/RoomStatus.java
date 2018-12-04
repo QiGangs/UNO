@@ -15,6 +15,7 @@ public class RoomStatus {
     public static int DISCARD_ACTION_ERROR = 1001;
 
     public static int DEFAULT_ROOM_PLAYER_NUM = 2;
+    public static int DEFAULT_ROOM_PLAYER_ALL_NUM = 4;
 
 
     public static String DEFAULT_ROOM_ID = "000000";
