@@ -20,6 +20,13 @@ public class WxLoginApi {
     @Autowired
     private VerifyCodeService verifyCodeService;
 
+    /** 
+    * @Description: 主要用于微信授权认证，获得用户的OPENID来作为用户的唯一标识
+    * @Param: [code] 
+    * @return: java.lang.String 
+    * @Author: qigang 
+    * @Date: 2018/12/4 
+    */
     @RequestMapping(value = "/login",produces="application/json;charset=UTF-8")
     @ResponseBody
     public String onLogin(@RequestParam String code){
