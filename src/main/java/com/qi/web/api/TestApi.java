@@ -1,5 +1,6 @@
 package com.qi.web.api;
 
+import com.qi.web.common.GlobalObject;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +16,12 @@ public class TestApi {
 
     @RequestMapping("/t")
     public Object test(){
-        return "OJBK";
+        return "OK";
+    }
+
+    @RequestMapping("/g")
+    public Object test1(){
+        return GlobalObject.AllRoom;
     }
 
 
