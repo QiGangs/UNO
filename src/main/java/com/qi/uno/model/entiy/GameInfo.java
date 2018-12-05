@@ -55,6 +55,11 @@ public class GameInfo {
         prevCard = cardPile.poll();   //引导牌
         discardPile.add(prevCard);   //引导牌计入弃牌堆
 //        canUseCard = getCanUsedCards(); //当前玩家可以出的牌
+        //去报引导牌不是王牌或者变色牌
+        while (prevCard.getFunc().equals(CardStatus.CRAD_FUNC_CHANGE) || prevCard.getFunc().equals(CardStatus.CRAD_FUNC_TRUMP)){
+            prevCard = cardPile.poll();   //引导牌
+            discardPile.add(prevCard);   //引导牌计入弃牌堆
+        }
         balance();
     }
     
@@ -96,6 +101,18 @@ public class GameInfo {
 
         return -10;
 
+    }
+    
+    
+    /** 
+    * @Description: 当前玩家向下顺移一个
+    * @Param: [] 
+    * @return: void 
+    * @Author: qigang 
+    * @Date: 2018/12/4 
+    */
+    public void toNextPlayer(){
+        currentPlayer = players.get(getNextPlayer(players,direction,1));
     }
 
     /** 
@@ -161,7 +178,11 @@ public class GameInfo {
             prevCard = card1;
             balance();
         }
-        if(currentPlayer.getRudge().size() == 0){
+//        if(currentPlayer.getRudge().size() == 0){
+//            return -1;
+//        }
+        //System.out.println(player.getRudge().size());
+        if(player.getRudge().size() <= 0){
             return -1;
         }
         return 1;

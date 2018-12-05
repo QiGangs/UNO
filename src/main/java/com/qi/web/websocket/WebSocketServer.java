@@ -37,6 +37,8 @@ public class WebSocketServer {
 
     private int flag = 1;
 
+    private int games = 1;
+
     /** 
     * @Description: 接受来自客户端的连接，根据参数将对应的连接放入对应的房间
     * @Param: [session, roomid, playerid]  roomid = 000000 执行创建操作
@@ -90,15 +92,26 @@ public class WebSocketServer {
      * 连接关闭调用的方法
      */
     @OnClose
-    public void onClose() {
+    public void onClose() throws IOException, InterruptedException {
         if(flag == 0){
             return;
         }
         //从set中删除
+        int mx = 0;
+        //移除前判断一下游戏进程,如果要移除的玩家是当前出牌玩家就直接跳往下一个玩家
+        if(room.getCurrentPlayer().getPlayerId().equals(playerid)){
+            System.out.println(room.getCurrentPlayer().getPlayerId());
+            room.toNextPlayer();
+            System.out.println("tonextplayer"+"\n"+room.getCurrentPlayer().getPlayerId());
+            mx = 1;
+        }
         room.getWebSocketSet().remove(this);
         room.getPlayers().remove(player);
         if(room.getWebSocketSet().size() == 0){
             GlobalObject.AllRoom.remove(room.getRoomId());
+        }
+        if(mx == 1){
+            socketService.sendRoomInfoToAll(room);
         }
         System.out.println("over!!!!");
 
@@ -147,7 +160,7 @@ public class WebSocketServer {
      * 实现服务器主动推送
      */
     public void sendMessage(String message) throws IOException {
-        System.out.println("send to :" +getPlayerid());
+        //System.out.println("send to :" +getPlayerid());
         this.session.getBasicRemote().sendText(message);
     }
 

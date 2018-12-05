@@ -4,6 +4,7 @@ import com.qi.uno.model.entiy.Player;
 import com.qi.uno.model.entiy.Room;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * @description:
@@ -28,5 +29,7 @@ public interface SocketService {
      void dealPutCardAction(Room room,Object info)throws IOException, InterruptedException;
 
      void sendGameoverToAll(Room room,Player winer) throws IOException, InterruptedException;
+
+     ArrayList<String> getPlayerIdList(Room room);
 
 }

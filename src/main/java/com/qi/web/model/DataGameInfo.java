@@ -3,6 +3,8 @@ package com.qi.web.model;
 import com.qi.uno.model.entiy.Card;
 import com.qi.uno.model.entiy.Player;
 
+import java.util.ArrayList;
+
 /**
  * @description:
  * @author: qigang
@@ -24,6 +26,10 @@ public class DataGameInfo implements Data {
     //有时候需要回传的被改变的颜色
     private String truetempcolor;
 
+    private ArrayList<String> playerlist = null;
+
+    private int derction = 0;
+
     private DataGameInfo(String roomid, Integer cardPileNum, Integer disCardPileNum, Card prevCard, Player currentPlayer,String canPutPlayerId ) {
         this.roomid = roomid;
         this.cardPileNum = cardPileNum;
@@ -43,12 +49,28 @@ public class DataGameInfo implements Data {
         this.truetempcolor = truetempcolor;
     }
 
+    public DataGameInfo(String roomid, Integer cardPileNum, Integer disCardPileNum, Card prevCard, Player currentPlayer, String canPutPlayerId, String truetempcolor,ArrayList<String> playerlist,int derction) {
+        this.roomid = roomid;
+        this.cardPileNum = cardPileNum;
+        this.disCardPileNum = disCardPileNum;
+        this.prevCard = prevCard;
+        this.currentPlayer = currentPlayer;
+        this.canPutPlayerId = canPutPlayerId;
+        this.truetempcolor = truetempcolor;
+        this.playerlist = playerlist;
+        this.derction = derction;
+    }
+
     public static DataGameInfo getInstance(String roomid, Integer cardPileNum, Integer disCardPileNum, Card prevCard, Player currentPlayer, String canPutPlayerId){
         return new DataGameInfo(roomid,cardPileNum,disCardPileNum,prevCard,currentPlayer,canPutPlayerId);
     }
 
     public static DataGameInfo getInstancewithcolor(String roomid, Integer cardPileNum, Integer disCardPileNum, Card prevCard, Player currentPlayer, String canPutPlayerId,String tempcolor){
         return new DataGameInfo(roomid,cardPileNum,disCardPileNum,prevCard,currentPlayer,canPutPlayerId,tempcolor);
+    }
+
+    public static DataGameInfo getInstancewithcolor(String roomid, Integer cardPileNum, Integer disCardPileNum, Card prevCard, Player currentPlayer, String canPutPlayerId,String tempcolor,ArrayList<String> playerlist,int derction){
+        return new DataGameInfo(roomid,cardPileNum,disCardPileNum,prevCard,currentPlayer,canPutPlayerId,tempcolor,playerlist,derction);
     }
 
     public String getRoomid() {
@@ -110,6 +132,22 @@ public class DataGameInfo implements Data {
         this.truetempcolor = truetempcolor;
     }
 
+    public ArrayList<String> getPlayerlist() {
+        return playerlist;
+    }
+
+    public void setPlayerlist(ArrayList<String> playerlist) {
+        this.playerlist = playerlist;
+    }
+
+    public int getDerction() {
+        return derction;
+    }
+
+    public void setDerction(int derction) {
+        this.derction = derction;
+    }
+
     @Override
     public String toString() {
         return "DataGameInfo{" +
@@ -120,6 +158,8 @@ public class DataGameInfo implements Data {
                 ", currentPlayer=" + currentPlayer +
                 ", canPutPlayerId='" + canPutPlayerId + '\'' +
                 ", truetempcolor='" + truetempcolor + '\'' +
+                ", playerlist=" + playerlist +
+                ", derction=" + derction +
                 '}';
     }
 }

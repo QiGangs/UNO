@@ -1,5 +1,6 @@
 package com.qi.web.service.impl;
 
+import com.google.common.collect.Lists;
 import com.qi.uno.common.CardHeapStatus;
 import com.qi.uno.model.entiy.Card;
 import com.qi.uno.model.entiy.Player;
@@ -17,8 +18,11 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Null;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * @description:
@@ -106,7 +110,8 @@ public class SocketServiceImpl implements SocketService {
     public void sendRoomInfoToAll(Room room) throws IOException, InterruptedException {
         for(WebSocketServer webSocket : room.getWebSocketSet()){
             Message message = Message.getMessage(MessageStatus.MESSAGE_TYPE_GAME_INFO,
-                    DataGameInfo.getInstancewithcolor(room.getRoomId(),room.getCardPile().size(),room.getDiscardPile().size(),room.getPrevCard(),webSocket.getPlayer(),room.getCurrentPlayer().getPlayerId(),room.getTempColor()));
+                    DataGameInfo.getInstancewithcolor(room.getRoomId(),room.getCardPile().size(),room.getDiscardPile().size(),room.getPrevCard(),webSocket.getPlayer(),room.getCurrentPlayer().getPlayerId(),room.getTempColor(),getPlayerIdList(room),room.getDerction()));
+            //System.out.println(JsonUtils.writeObjectToJson(message));
             webSocket.sendMessage(JsonUtils.writeObjectToJson(message));
         }
     }
@@ -146,6 +151,7 @@ public class SocketServiceImpl implements SocketService {
             }
 
             int res = room.action(player, card, false, tempColor);
+            //System.out.println("action res "+res);
             if (res == 1) {
                 sendRoomInfoToAll(room);
             } else if(res == -1){
@@ -170,7 +176,16 @@ public class SocketServiceImpl implements SocketService {
             Message message = Message.getMessage(MessageStatus.MESSAGE_TYPE_GAME_OVER,
                     null);
             //这里需要回传winer的信息
+            //System.out.println(JsonUtils.writeObjectToJson(message));
             webSocket.sendMessage(JsonUtils.writeObjectToJson(message));
         }
     }
+
+    @Override
+    public ArrayList<String> getPlayerIdList(Room room) {
+        ArrayList<String> list  = (ArrayList<String>) room.getPlayers().stream().map(Player::getPlayerId).collect(toList());
+        return list;
+    }
+
+
 }

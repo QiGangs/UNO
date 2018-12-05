@@ -76,6 +76,10 @@ public class Room {
         return gameInfo.getTempColor();
     }
 
+    public void toNextPlayer(){
+        gameInfo.toNextPlayer();
+    }
+
 
     public ArrayList<Card> getPlayerRudge(String playerId){
         return gameInfo.getPlayerRudge(playerId);
@@ -127,6 +131,11 @@ public class Room {
 
         gameInfo = null;
 
+    }
+
+
+    public int getDerction(){
+        return gameInfo.getDirection();
     }
 
 
