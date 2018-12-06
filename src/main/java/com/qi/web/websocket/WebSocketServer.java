@@ -99,7 +99,7 @@ public class WebSocketServer {
         //从set中删除
         int mx = 0;
         //移除前判断一下游戏进程,如果要移除的玩家是当前出牌玩家就直接跳往下一个玩家
-        if(room.getCurrentPlayer().getPlayerId().equals(playerid)){
+        if( room.getStarted() && room.getCurrentPlayer().getPlayerId().equals(playerid)){
             System.out.println(room.getCurrentPlayer().getPlayerId());
             room.toNextPlayer();
             System.out.println("tonextplayer"+"\n"+room.getCurrentPlayer().getPlayerId());
