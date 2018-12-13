@@ -2,6 +2,7 @@ package com.qi.web.service;
 
 import com.qi.uno.model.entiy.Player;
 import com.qi.uno.model.entiy.Room;
+import com.qi.web.model.Playermini;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +31,6 @@ public interface SocketService {
 
      void sendGameoverToAll(Room room,Player winer) throws IOException, InterruptedException;
 
-     ArrayList<String> getPlayerIdList(Room room);
+     ArrayList<Playermini> getPlayerIdList(Room room);
 
 }

@@ -30,6 +30,8 @@ public class WxLoginApi {
     @RequestMapping(value = "/login",produces="application/json;charset=UTF-8")
     @ResponseBody
     public String onLogin(@RequestParam String code){
+        System.out.println("there are someone login");
+
         String res =  verifyCodeService.CheckMessageCode(code);
         if(res == null) {
             return "error";

@@ -112,6 +112,9 @@ public class GameInfo {
     * @Date: 2018/12/4 
     */
     public void toNextPlayer(){
+        if(players.size() <= 0){
+            return;
+        }
         currentPlayer = players.get(getNextPlayer(players,direction,1));
     }
 

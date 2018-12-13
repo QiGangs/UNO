@@ -10,6 +10,7 @@ import com.qi.web.common.MessageStatus;
 import com.qi.web.model.DataGameInfo;
 import com.qi.web.model.DataRoom;
 import com.qi.web.model.Message;
+import com.qi.web.model.Playermini;
 import com.qi.web.service.SocketService;
 import com.qi.web.websocket.WebSocketServer;
 import org.apache.commons.io.input.BOMInputStream;
@@ -182,8 +183,8 @@ public class SocketServiceImpl implements SocketService {
     }
 
     @Override
-    public ArrayList<String> getPlayerIdList(Room room) {
-        ArrayList<String> list  = (ArrayList<String>) room.getPlayers().stream().map(Player::getPlayerId).collect(toList());
+    public ArrayList<Playermini> getPlayerIdList(Room room) {
+        ArrayList<Playermini> list  = (ArrayList<Playermini>) room.getPlayers().stream().map(player -> Playermini.getinstance(player.getPlayerId(),player.getRudge().size())).collect(toList());
         return list;
     }
 

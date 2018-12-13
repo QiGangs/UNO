@@ -23,6 +23,16 @@ public class TestThisGame {
         room.addPlayer(Player.getPlayer("222"));
         room.addPlayer(Player.getPlayer("333"));
         room.startGame();
+        System.out.println(room.getCardPile().toString());
+        room =Room.getRoom("456",3,Player.getPlayer("111"));
+        room.addPlayer(Player.getPlayer("222"));
+        room.addPlayer(Player.getPlayer("333"));
+        room.startGame();
+        System.out.println(room.getCardPile().toString());
+
+        room.addPlayer(Player.getPlayer("222"));
+        room.addPlayer(Player.getPlayer("333"));
+        room.startGame();
 
         show(room);
 
