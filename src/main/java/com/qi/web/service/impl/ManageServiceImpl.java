@@ -9,4 +9,8 @@ import com.qi.web.service.ManageService;
  **/
 public class ManageServiceImpl implements ManageService {
 
+    @Override
+    public String getRoomList() {
+        return null;
+    }
 }

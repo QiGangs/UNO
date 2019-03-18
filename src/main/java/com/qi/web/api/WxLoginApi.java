@@ -28,9 +28,8 @@ public class WxLoginApi {
     * @Date: 2018/12/4 
     */
     @RequestMapping(value = "/login")
-    @ResponseBody
     public String onLogin(@RequestParam String code){
-        System.out.println("there are someone login");
+        System.out.println("there are someone login"+code);
 
         String res =  verifyCodeService.CheckMessageCode(code);
         if(res == null) {
