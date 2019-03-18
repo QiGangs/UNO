@@ -64,8 +64,9 @@ public class WebSocketServer {
                 room = Room.getRoom(socketService.getRoomId(),RoomStatus.DEFAULT_ROOM_PLAYER_ALL_NUM,player);
                 GlobalObject.AllRoom.put(room.getRoomId(),room);
             }else {
+
                 //不然此用户加入房间
-                if(room.getPlayers().size()<room.getPlayerNum()){
+                if(room.getPlayers().size()<room.getPlayerNum() && !room.getStarted()){
                     room.addPlayer(player);
                 }else {
                     //直接关闭套接字

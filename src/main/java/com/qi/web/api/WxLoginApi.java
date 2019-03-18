@@ -27,7 +27,7 @@ public class WxLoginApi {
     * @Author: qigang 
     * @Date: 2018/12/4 
     */
-    @RequestMapping(value = "/login",produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "/login")
     @ResponseBody
     public String onLogin(@RequestParam String code){
         System.out.println("there are someone login");

@@ -1,6 +1,6 @@
 server:
   port: 8080
-  ssl:
-    key-store: classpath:uno.gongyl.cn.jks
-    key-password: 158sad1h2svao
-    key-store-type: JKS
+#  ssl:
+#    key-store: classpath:uno.gongyl.cn.jks
+#    key-password: 158sad1h2svao
+#    key-store-type: JKS
