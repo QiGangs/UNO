@@ -1,5 +1,6 @@
 package com.qi.util.json;
 
+import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class JsonUtils {
+	private static Gson gson = new Gson();
 	public static <T> T readJsonToObject(Class<T> clazz, String json) {
 		if (StringUtils.isBlank(json))
 			return null;
@@ -148,6 +150,10 @@ public class JsonUtils {
 	public static String getJsonValueByKey(String json, String key) {
 		Map<String, String> info = readJsonToMap(json);
 		return info.get(key);
+	}
+
+	public static Gson getGson(){
+		return gson;
 	}
 
 }
